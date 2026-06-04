@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>理想卧室改造设计 | 从杂乱到宁静</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF7F2;
+    --warm-white: #FBF8F3;
+    --sand: #E8DFD5;
+    --light-wood: #C4A882;
+    --mid-wood: #A0845C;
+    --dark-wood: #6B4226;
+    --sage: #8DA391;
+    --deep-sage: #5C7A61;
+    --charcoal: #3C3832;
+    --warm-gray: #6B635B;
+    --clay: #C4956A;
+    --linen: #EDE4D8;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content:''; position:fixed; inset:0; z-index:9999;
+    pointer-events:none; opacity:0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  ::-webkit-scrollbar { width:6px; }
+  ::-webkit-scrollbar-track { background:var(--linen); }
+  ::-webkit-scrollbar-thumb { background:var(--mid-wood); border-radius:3px; }
+
+  /* ── NAV ── */
+  nav { position:fixed; right:24px; top:50%; transform:translateY(-50%); z-index:100; display:flex; flex-direction:column; gap:16px; }
+  nav a { display:block; width:10px; height:10px; border-radius:50%; background:var(--sand); transition:all 0.4s cubic-bezier(0.22,0.85,0.35,1); position:relative; }
+  nav a::after { content:attr(data-label); position:absolute; right:20px; top:50%; transform:translateY(-50%); white-space:nowrap; font-size:12px; color:var(--warm-gray); opacity:0; transition:opacity 0.3s; pointer-events:none; letter-spacing:0.5px; }
+  nav a:hover, nav a.active { background:var(--dark-wood); transform:scale(1.4); box-shadow:0 0 0 6px rgba(107,66,38,0.12); }
+  nav a:hover::after { opacity:1; }
+
+  /* ── HERO ── */
+  .hero { min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:80px 24px; position:relative; }
+  .hero-badge { display:inline-block; padding:6px 20px; border:1px solid var(--mid-wood); border-radius:100px; font-size:13px; letter-spacing:3px; color:var(--mid-wood); text-transform:uppercase; margin-bottom:32px; animation:fadeInUp 0.8s ease both; }
+  .hero h1 { font-family:'ZCOOL XiaoWei','Noto Serif SC',serif; font-size:clamp(48px,7vw,96px); font-weight:400; line-height:1.15; color:var(--charcoal); animation:fadeInUp 0.8s 0.1s ease both; letter-spacing:2px; }
+  .hero h1 em { font-style:normal; color:var(--dark-wood); position:relative; }
+  .hero h1 em::after { content:''; position:absolute; bottom:4px; left:0; width:100%; height:8px; background:rgba(196,168,130,0.35); border-radius:4px; z-index:-1; }
+  .hero-subtitle { font-family:'Noto Serif SC',serif; font-size:clamp(16px,2vw,20px); color:var(--warm-gray); margin-top:24px; max-width:520px; animation:fadeInUp 0.8s 0.2s ease both; line-height:1.8; }
+  .hero-scroll { position:absolute; bottom:40px; animation:fadeInUp 0.8s 0.5s ease both, float 3s ease-in-out infinite; }
+  .hero-scroll span { display:block; width:1px; height:48px; background:var(--mid-wood); margin:0 auto 8px; }
+  .hero-scroll p { font-size:10px; letter-spacing:3px; color:var(--mid-wood); text-transform:uppercase; }
+
+  /* ── SECTION COMMON ── */
+  section { padding:90px 24px; }
+  .section-inner { max-width:1100px; margin:0 auto; width:100%; }
+  .section-tag { font-size:12px; letter-spacing:4px; text-transform:uppercase; color:var(--mid-wood); margin-bottom:16px; }
+  .section-title { font-family:'ZCOOL XiaoWei','Noto Serif SC',serif; font-size:clamp(32px,5vw,52px); font-weight:400; color:var(--charcoal); margin-bottom:20px; line-height:1.2; letter-spacing:1px; }
+  .section-desc { font-size:16px; color:var(--warm-gray); max-width:600px; line-height:1.9; }
+
+  /* ── BEFORE / AFTER ── */
+  .comparison-section { background:var(--warm-white); }
+  .comp-wrapper { position:relative; max-width:950px; margin:40px auto 0; border-radius:24px; overflow:hidden; box-shadow:0 24px 80px rgba(60,56,50,0.18); }
+  .comp-container { position:relative; width:100%; aspect-ratio:16/10; overflow:hidden; cursor:ew-resize; user-select:none; }
+  .comp-container canvas { position:absolute; top:0; left:0; width:100%; height:100%; }
+  #compBeforeCanvas { z-index:1; }
+  #compAfterCanvas { z-index:2; }
+  .comp-handle-line { position:absolute; top:0; bottom:0; width:3px; background:white; z-index:5; pointer-events:none; box-shadow:0 0 20px rgba(0,0,0,0.15); }
+  .comp-handle-knob { position:absolute; top:50%; width:52px; height:52px; border-radius:50%; background:white; z-index:6; pointer-events:none; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 24px rgba(0,0,0,0.12); transform:translate(-50%,-50%); }
+  .comp-handle-knob svg { width:20px; height:20px; color:var(--dark-wood); }
+  .comp-label { position:absolute; top:20px; z-index:10; font-size:13px; letter-spacing:2px; padding:7px 18px; border-radius:100px; pointer-events:none; }
+  .comp-label-before { left:20px; background:rgba(0,0,0,0.25); color:#ddd; }
+  .comp-label-after { right:20px; background:rgba(107,66,38,0.15); color:var(--dark-wood); }
+
+  /* ── 3D VIEWER ── */
+  .viewer-section { background:var(--cream); position:relative; overflow:hidden; }
+  .viewer-section::before { content:''; position:absolute; width:600px; height:600px; border-radius:50%; background:radial-gradient(circle,rgba(196,168,130,0.08) 0%,transparent 70%); top:-200px; right:-200px; pointer-events:none; }
+  .viewer-canvas-wrap { max-width:750px; margin:40px auto 0; aspect-ratio:1; cursor:grab; border-radius:20px; overflow:hidden; box-shadow:0 16px 60px rgba(60,56,50,0.1); }
+  .viewer-canvas-wrap:active { cursor:grabbing; }
+  .viewer-canvas-wrap canvas { width:100%; height:100%; display:block; }
+  .viewer-hint { text-align:center; margin-top:14px; font-size:13px; color:var(--warm-gray); letter-spacing:1px; }
+
+  /* ── PHILOSOPHY ── */
+  .phil-section { background:var(--warm-white); }
+  .phil-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px; margin-top:44px; }
+  .phil-card { background:white; border-radius:20px; padding:36px 30px; box-shadow:0 4px 24px rgba(60,56,50,0.06); transition:all 0.4s cubic-bezier(0.22,0.85,0.35,1); border:1px solid transparent; position:relative; overflow:hidden; }
+  .phil-card::before { content:''; position:absolute; top:0; left:0; width:4px; height:0; background:var(--sage); transition:height 0.4s ease; border-radius:0 0 4px 0; }
+  .phil-card:hover::before { height:100%; }
+  .phil-card:hover { transform:translateY(-6px); box-shadow:0 16px 48px rgba(60,56,50,0.12); border-color:rgba(141,163,145,0.2); }
+  .phil-icon { font-size:40px; margin-bottom:16px; display:block; }
+  .phil-card h3 { font-family:'Noto Serif SC',serif; font-size:20px; color:var(--charcoal); margin-bottom:10px; letter-spacing:1px; }
+  .phil-card p { font-size:14px; color:var(--warm-gray); line-height:1.8; }
+
+  /* ── PALETTE ── */
+  .palette-section { background:var(--cream); }
+  .palette-grid { display:flex; flex-wrap:wrap; gap:0; margin-top:44px; border-radius:24px; overflow:hidden; box-shadow:0 4px 32px rgba(60,56,50,0.06); }
+  .palette-swatch { flex:1 1 110px; min-width:90px; aspect-ratio:3/4; display:flex; flex-direction:column; justify-content:flex-end; padding:18px 14px; transition:all 0.35s ease; cursor:default; position:relative; }
+  .palette-swatch:hover { flex-grow:1.8; }
+  .palette-swatch span { font-size:11px; letter-spacing:1px; opacity:0.85; margin-bottom:4px; }
+  .palette-swatch code { font-size:11px; font-family:'SF Mono',Consolas,monospace; opacity:0.55; }
+
+  /* ── MATERIALS ── */
+  .materials-section { background:var(--warm-white); }
+  .mat-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:18px; margin-top:44px; }
+  .mat-card { background:white; border-radius:18px; overflow:hidden; box-shadow:0 4px 20px rgba(60,56,50,0.06); transition:all 0.35s ease; }
+  .mat-card:hover { transform:translateY(-4px); box-shadow:0 12px 36px rgba(60,56,50,0.12); }
+  .mat-preview { height:100px; position:relative; overflow:hidden; }
+  .mat-info { padding:14px 18px; }
+  .mat-info h4 { font-family:'Noto Serif SC',serif; font-size:15px; color:var(--charcoal); margin-bottom:4px; }
+  .mat-info p { font-size:12px; color:var(--warm-gray); line-height:1.6; }
+
+  .mat-wood-light { background:repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(160,130,100,0.18) 3px,rgba(160,130,100,0.18) 4px),linear-gradient(180deg,#dcc8a8 0%,#d4bf9a 25%,#dcc8a8 50%,#d0b890 75%,#d8c4a0 100%); }
+  .mat-wood-dark { background:repeating-linear-gradient(85deg,transparent,transparent 4px,rgba(80,40,15,0.2) 4px,rgba(80,40,15,0.2) 5px),linear-gradient(180deg,#7a5030 0%,#6b4226 30%,#7a5030 60%,#6b4226 100%); }
+  .mat-linen { background:repeating-linear-gradient(0deg,transparent,transparent 1px,rgba(200,190,170,0.3) 1px,rgba(200,190,170,0.3) 2px),repeating-linear-gradient(90deg,transparent,transparent 1px,rgba(200,190,170,0.2) 1px,rgba(200,190,170,0.2) 2px),linear-gradient(180deg,#ede4d4 0%,#f0e8da 100%); }
+  .mat-plaster { background:radial-gradient(ellipse at 30% 20%,rgba(255,255,255,0.4) 0%,transparent 60%),linear-gradient(180deg,#f5f0e8 0%,#ede4d4 100%); }
+  .mat-greenery { background:radial-gradient(ellipse at 40% 30%,rgba(180,200,160,0.5) 0%,transparent 60%),linear-gradient(180deg,#8da391 0%,#6b8b68 40%,#5c7a5a 100%); }
+  .mat-terracotta { background:radial-gradient(ellipse at 50% 40%,rgba(220,180,150,0.4) 0%,transparent 50%),linear-gradient(180deg,#c4956a 0%,#b08050 100%); }
+
+  /* ── FEATURES ── */
+  .features-section { background:var(--cream); }
+  .feat-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin-top:44px; }
+  .feat-item { display:flex; align-items:flex-start; gap:16px; padding:20px; background:rgba(255,255,255,0.5); border-radius:14px; transition:all 0.3s ease; }
+  .feat-item:hover { background:white; box-shadow:0 4px 20px rgba(60,56,50,0.06); }
+  .feat-num { font-family:'ZCOOL XiaoWei',serif; font-size:28px; color:var(--sage); line-height:1; min-width:36px; }
+  .feat-text h4 { font-family:'Noto Serif SC',serif; font-size:15px; color:var(--charcoal); margin-bottom:4px; }
+  .feat-text p { font-size:13px; color:var(--warm-gray); line-height:1.6; }
+
+  /* ── FOOTER ── */
+  footer { padding:80px 24px 40px; text-align:center; background:var(--charcoal); color:rgba(255,255,255,0.55); }
+  footer .end-mark { font-family:'ZCOOL XiaoWei',serif; font-size:48px; color:rgba(255,255,255,0.12); margin-bottom:24px; }
+  footer p { font-size:13px; letter-spacing:1px; line-height:2; }
+
+  /* ── REVEAL ── */
+  .reveal { opacity:0; transform:translateY(40px); transition:all 0.8s cubic-bezier(0.22,0.85,0.35,1); }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  @keyframes fadeInUp { from{opacity:0;transform:translateY(30px);} to{opacity:1;transform:translateY(0);} }
+  @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+
+  @media (max-width:768px) {
+    nav { right:8px; gap:12px; }
+    nav a { width:8px; height:8px; }
+    .comp-wrapper { border-radius:16px; }
+    .viewer-canvas-wrap { border-radius:14px; }
+    .palette-swatch { aspect-ratio:5/1; min-width:100%; }
+    .palette-swatch:hover { flex-grow:1; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#hero" data-label="首页" class="active"></a>
+  <a href="#comparison" data-label="改造对比"></a>
+  <a href="#viewer" data-label="3D 预览"></a>
+  <a href="#philosophy" data-label="设计理念"></a>
+  <a href="#palette" data-label="色彩材质"></a>
+  <a href="#features" data-label="改造清单"></a>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero" id="hero">
+  <div class="hero-badge">室内设计 · 期末作业</div>
+  <h1>从<em>杂乱</em>到<em>宁静</em></h1>
+  <p class="hero-subtitle">将一间普通卧室改造为心中理想的栖息之所<br>融合现代简约与温暖质感，让每一天的归家都成为享受</p>
+  <div class="hero-scroll"><span></span><p>向下探索</p></div>
+</section>
+
+<!-- ═══════════ BEFORE / AFTER ═══════════ -->
+<section class="comparison-section" id="comparison">
+  <div class="section-inner">
+    <p class="section-tag">01 · 改造对比</p>
+    <h2 class="section-title">Before & After</h2>
+    <p class="section-desc">拖动中间滑块，查看改造前后的惊人变化。从拥挤沉闷到开阔明亮，每一个细节都经过重新考量。</p>
+    <div class="comp-wrapper" id="compWrapper">
+      <div class="comp-container" id="compContainer">
+        <canvas id="compBeforeCanvas"></canvas>
+        <canvas id="compAfterCanvas"></canvas>
+        <div class="comp-handle-line" id="compHandle"></div>
+        <div class="comp-handle-knob" id="compKnob">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 5 9 12 15 19"/><polyline points="9 5 15 12 9 19"/>
+          </svg>
+        </div>
+        <div class="comp-label comp-label-before">改造前</div>
+        <div class="comp-label comp-label-after">改造后</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 3D ISOMETRIC VIEWER ═══════════ -->
+<section class="viewer-section" id="viewer">
+  <div class="section-inner">
+    <p class="section-tag">02 · 三维预览</p>
+    <h2 class="section-title">房间全景</h2>
+    <p class="section-desc">拖拽鼠标旋转视角，查看改造后卧室的全景布局。每一处都经过精心设计。</p>
+    <div class="viewer-canvas-wrap" id="viewerWrap">
+      <canvas id="viewerCanvas"></canvas>
+    </div>
+    <p class="viewer-hint">🖱 拖拽鼠标旋转视角 &nbsp;|&nbsp; 滚轮缩放待探索</p>
+  </div>
+</section>
+
+<!-- ═══════════ DESIGN PHILOSOPHY ═══════════ -->
+<section class="phil-section" id="philosophy">
+  <div class="section-inner">
+    <p class="section-tag">03 · 设计理念</p>
+    <h2 class="section-title">设计哲学</h2>
+    <p class="section-desc">好的设计不是堆砌，而是取舍。以下四大原则贯穿整个改造方案。</p>
+    <div class="phil-grid">
+      <div class="phil-card reveal"><span class="phil-icon">🌿</span><h3>自然共生</h3><p>引入木质元素与绿植，模糊室内外界限。橡木地板、陶土花盆、亚麻床品——让自然触手可及，营造会呼吸的空间。</p></div>
+      <div class="phil-card reveal"><span class="phil-icon">☀️</span><h3>光之韵律</h3><p>最大化自然采光，保留大窗设计。清晨阳光透过亚麻窗帘洒入，黄昏暖光映照木纹——光是空间最动人的装饰。</p></div>
+      <div class="phil-card reveal"><span class="phil-icon">🤲</span><h3>留白之美</h3><p>摒弃多余装饰，每一件物品都有其存在理由。大量留白让空间呼吸，也让居住者的心灵获得片刻宁静。</p></div>
+      <div class="phil-card reveal"><span class="phil-icon">🧘</span><h3>感官温度</h3><p>从触感温润的木地板到柔软蓬松的床品，从暖色调灯光到天然材质的选择——让空间拥有温度，而不仅仅是视觉上的美。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ COLOR PALETTE ═══════════ -->
+<section class="palette-section" id="palette">
+  <div class="section-inner">
+    <p class="section-tag">04 · 色彩与材质</p>
+    <h2 class="section-title">配色方案</h2>
+    <p class="section-desc">以大地色系为基调，搭配自然绿意与木质暖调，营造沉稳而不失温暖的氛围。</p>
+    <div class="palette-grid">
+      <div class="palette-swatch" style="background:#FAF7F2;color:#6B635B;"><span>暖奶油白</span><code>#FAF7F2</code></div>
+      <div class="palette-swatch" style="background:#E8DFD5;color:#6B635B;"><span>沙色</span><code>#E8DFD5</code></div>
+      <div class="palette-swatch" style="background:#C4A882;color:#3C3832;"><span>浅橡木</span><code>#C4A882</code></div>
+      <div class="palette-swatch" style="background:#8DA391;color:#fff;"><span>鼠尾草绿</span><code>#8DA391</code></div>
+      <div class="palette-swatch" style="background:#6B4226;color:#EDE4D8;"><span>胡桃木</span><code>#6B4226</code></div>
+      <div class="palette-swatch" style="background:#C4956A;color:#fff;"><span>陶土</span><code>#C4956A</code></div>
+      <div class="palette-swatch" style="background:#3C3832;color:#EDE4D8;"><span>炭灰</span><code>#3C3832</code></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ MATERIALS ═══════════ -->
+<section class="materials-section">
+  <div class="section-inner">
+    <h2 class="section-title">材质选择</h2>
+    <p class="section-desc">精选六种核心材质，每一种都服务于舒适与美学的双重目标。</p>
+    <div class="mat-row">
+      <div class="mat-card reveal"><div class="mat-preview mat-wood-light"></div><div class="mat-info"><h4>浅色橡木</h4><p>地板 · 柜体表面<br>天然纹理，温暖柔和</p></div></div>
+      <div class="mat-card reveal"><div class="mat-preview mat-wood-dark"></div><div class="mat-info"><h4>胡桃木</h4><p>床架 · 边几点缀<br>深沉质感，沉稳大气</p></div></div>
+      <div class="mat-card reveal"><div class="mat-preview mat-linen"></div><div class="mat-info"><h4>亚麻</h4><p>窗帘 · 床品<br>透气亲肤，自然褶皱美感</p></div></div>
+      <div class="mat-card reveal"><div class="mat-preview mat-plaster"></div><div class="mat-info"><h4>艺术涂料</h4><p>墙面涂装<br>微水泥质感，柔和漫反射</p></div></div>
+      <div class="mat-card reveal"><div class="mat-preview mat-greenery"></div><div class="mat-info"><h4>室内绿植</h4><p>琴叶榕 · 龟背竹<br>净化空气，注入生命力</p></div></div>
+      <div class="mat-card reveal"><div class="mat-preview mat-terracotta"></div><div class="mat-info"><h4>陶土</h4><p>花盆 · 装饰摆件<br>手工质感，质朴温暖</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FEATURES ═══════════ -->
+<section class="features-section" id="features">
+  <div class="section-inner">
+    <p class="section-tag">05 · 改造清单</p>
+    <h2 class="section-title">设计细节</h2>
+    <p class="section-desc">每一个细节的改变，都让这个空间离理想更近一步。</p>
+    <div class="feat-list">
+      <div class="feat-item reveal"><span class="feat-num">01</span><div class="feat-text"><h4>墙面刷新</h4><p>从暗沉壁纸改为暖白艺术涂料，提升空间亮度并带来微妙的肌理感。</p></div></div>
+      <div class="feat-item reveal"><span class="feat-num">02</span><div class="feat-text"><h4>地板更换</h4><p>拆除老旧瓷砖，铺设浅色橡木地板，脚感温润，视觉上扩大空间感。</p></div></div>
+      <div class="feat-item reveal"><span class="feat-num">03</span><div class="feat-text"><h4>窗帘升级</h4><p>厚重遮光帘改为双层亚麻帘，日间柔光过滤，夜间保持私密性。</p></div></div>
+      <div class="feat-item reveal"><span class="feat-num">04</span><div class="feat-text"><h4>灯光系统</h4><p>三层灯光设计：主灯 + 床头壁灯 + 角落落地灯，色温统一 2700K 暖黄光。</p></div></div>
+      <div class="feat-item reveal"><span class="feat-num">05</span><div class="feat-text"><h4>收纳优化</h4><p>嵌入式衣柜 + 床下收纳抽屉，所有物品各归其位，保持表面整洁。</p></div></div>
+      <div class="feat-item reveal"><span class="feat-num">06</span><div class="feat-text"><h4>绿植点缀</h4><p>窗边琴叶榕 + 床头龟背竹 + 书架垂吊植物，三层绿化让空间充满生机。</p></div></div>
+      <div class="feat-item reveal"><span class="feat-num">07</span><div class="feat-text"><h4>色彩统一</h4><p>全屋控制在大地色系内，不超过五种主色，视觉上和谐统一、宁静有序。</p></div></div>
+      <div class="feat-item reveal"><span class="feat-num">08</span><div class="feat-text"><h4>个性化装饰</h4><p>精选少量艺术挂画与手工陶艺，表达居住者的审美趣味而不喧宾夺主。</p></div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="end-mark">◇</div>
+  <p>室内设计原理 · 期末作业<br>理想卧室改造设计方案<br>设计主题：现代简约 × 温暖自然</p>
+  <p style="margin-top:16px;opacity:0.35;font-size:11px;">Designed with ♥ · 2024</p>
+</footer>
+
+<!-- ═══════════ SCRIPTS ═══════════ -->
+<script>
+(function() {
+  // ═══════════════════ CANVAS ISOMETRIC RENDER ENGINE ═══════════════════
+
+  const cos30 = Math.cos(Math.PI/6);  // ≈ 0.866
+  const sin30 = 0.5;
+
+  function project(x, y, z, cx, cy) {
+    return {
+      sx: cx + (x - z) * cos30,
+      sy: cy + (x + z) * sin30 - y
+    };
+  }
+
+  function drawPoly(ctx, pts, fill) {
+    if (pts.length < 3) return;
+    ctx.beginPath();
+    ctx.moveTo(pts[0].sx, pts[0].sy);
+    for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].sx, pts[i].sy);
+    ctx.closePath();
+    ctx.fillStyle = fill;
+    ctx.fill();
+  }
+
+  function drawRect3D(ctx, x, z, w, d, h, cx, cy, topColor, frontColor, sideColor) {
+    // Top face
+    const top = [
+      project(x, h, z, cx, cy),
+      project(x+w, h, z, cx, cy),
+      project(x+w, h, z+d, cx, cy),
+      project(x, h, z+d, cx, cy)
+    ];
+    // Front face
+    const front = [
+      project(x, 0, z+d, cx, cy),
+      project(x+w, 0, z+d, cx, cy),
+      project(x+w, h, z+d, cx, cy),
+      project(x, h, z+d, cx, cy)
+    ];
+    // Side face
+    const side = [
+      project(x+w, 0, z, cx, cy),
+      project(x+w, 0, z+d, cx, cy),
+      project(x+w, h, z+d, cx, cy),
+      project(x+w, h, z, cx, cy)
+    ];
+    if (sideColor) drawPoly(ctx, side, sideColor);
+    if (frontColor) drawPoly(ctx, front, frontColor);
+    if (topColor) drawPoly(ctx, top, topColor);
+  }
+
+  // ═══════════════════ DRAW "BEFORE" ROOM (cluttered, dark) ═══════════════════
+  function drawBeforeRoom(ctx, W, H) {
+    const cx = W/2 + 40, cy = H/2 + 50;
+    const RW = 420, RD = 320, RH = 260;
+
+    ctx.clearRect(0, 0, W, H);
+
+    // Back wall
+    drawPoly(ctx, [
+      project(0, 0, 0, cx, cy), project(RW, 0, 0, cx, cy),
+      project(RW, RH, 0, cx, cy), project(0, RH, 0, cx, cy)
+    ], '#b8afa5');
+
+    // Left wall
+    drawPoly(ctx, [
+      project(0, 0, 0, cx, cy), project(0, 0, RD, cx, cy),
+      project(0, RH, RD, cx, cy), project(0, RH, 0, cx, cy)
+    ], '#c4bbb0');
+
+    // Floor
+    drawPoly(ctx, [
+      project(0, 0, 0, cx, cy), project(RW, 0, 0, cx, cy),
+      project(RW, 0, RD, cx, cy), project(0, 0, RD, cx, cy)
+    ], '#a89880');
+
+    // Floor tile lines
+    ctx.strokeStyle = 'rgba(0,0,0,0.08)';
+    ctx.lineWidth = 1;
+    for (let i = 40; i < RW; i += 40) {
+      const a = project(i, 0, 0, cx, cy);
+      const b = project(i, 0, RD, cx, cy);
+      ctx.beginPath(); ctx.moveTo(a.sx, a.sy); ctx.lineTo(b.sx, b.sy); ctx.stroke();
+    }
+    for (let j = 40; j < RD; j += 40) {
+      const a = project(0, 0, j, cx, cy);
+      const b = project(RW, 0, j, cx, cy);
+      ctx.beginPath(); ctx.moveTo(a.sx, a.sy); ctx.lineTo(b.sx, b.sy); ctx.stroke();
+    }
+
+    // Small window
+    const wx = 170, wz = 0, ww = 100, wh = 110, wy = 80;
+    const winPts = [
+      project(wx, wy, wz, cx, cy), project(wx+ww, wy, wz, cx, cy),
+      project(wx+ww, wy+wh, wz, cx, cy), project(wx, wy+wh, wz, cx, cy)
+    ];
+    drawPoly(ctx, winPts, '#9ab0c0');
+    ctx.strokeStyle = '#8a7a6a'; ctx.lineWidth = 4;
+    ctx.stroke();
+    ctx.beginPath();
+    const wm = project(wx+ww/2, wy, wz, cx, cy);
+    const wb = project(wx+ww/2, wy+wh, wz, cx, cy);
+    ctx.moveTo(wm.sx, wm.sy); ctx.lineTo(wb.sx, wb.sy);
+    ctx.stroke();
+
+    // Dark curtains
+    ctx.fillStyle = '#6b5e50';
+    const cl = project(wx-8, wy, wz, cx, cy);
+    const clb = project(wx-8, wy+wh, wz, cx, cy);
+    ctx.fillRect(cl.sx-5, cl.sy, 10, clb.sy-cl.sy);
+    const cr = project(wx+ww+8, wy, wz, cx, cy);
+    ctx.fillRect(cr.sx-5, cr.sy, 10, clb.sy-clb.sy);
+
+    // Bed - messy
+    drawRect3D(ctx, 240, 130, 160, 200, 12, cx, cy, '#9a8a7a', '#8a7a6a', '#7a6a5a');
+    // Mattress
+    drawRect3D(ctx, 245, 135, 150, 190, 40, cx, cy, '#b8a898', '#a89888', '#988878');
+    // Messy blanket
+    const blPts = [
+      project(248, 42, 140, cx, cy), project(380, 45, 145, cx, cy),
+      project(370, 42, 310, cx, cy), project(240, 40, 300, cx, cy)
+    ];
+    drawPoly(ctx, blPts, '#8b7b6b');
+    // Clothes on floor
+    drawRect3D(ctx, 220, 280, 50, 35, 6, cx, cy, '#c44a3a', '#a33a2a', '#8a2a1a');
+    drawRect3D(ctx, 300, 300, 40, 30, 5, cx, cy, '#4a6a8a', '#3a5a7a', '#2a4a6a');
+
+    // Old nightstand
+    drawRect3D(ctx, 210, 80, 50, 50, 55, cx, cy, '#7a6a5a', '#6a5a4a', '#5a4a3a');
+
+    // Cluttered shelf
+    drawRect3D(ctx, 0, 50, 8, 80, 12, cx, cy, '#8a7a6a', '#7a6a5a', '#6a5a4a');
+    drawRect3D(ctx, 0, 80, 8, 30, 10, cx, cy, '#7a6a5a', '#6a5a4a', '#5a4a3a');
+
+    // No rug, no plants
+  }
+
+  // ═══════════════════ DRAW "AFTER" ROOM (warm, minimalist) ═══════════════════
+  function drawAfterRoom(ctx, W, H) {
+    const cx = W/2 + 40, cy = H/2 + 50;
+    const RW = 420, RD = 320, RH = 260;
+
+    ctx.clearRect(0, 0, W, H);
+
+    // Back wall - warm cream
+    drawPoly(ctx, [
+      project(0, 0, 0, cx, cy), project(RW, 0, 0, cx, cy),
+      project(RW, RH, 0, cx, cy), project(0, RH, 0, cx, cy)
+    ], '#f5efe8');
+
+    // Left wall - slightly darker
+    drawPoly(ctx, [
+      project(0, 0, 0, cx, cy), project(0, 0, RD, cx, cy),
+      project(0, RH, RD, cx, cy), project(0, RH, 0, cx, cy)
+    ], '#ede4d6');
+
+    // Floor - light wood
+    drawPoly(ctx, [
+      project(0, 0, 0, cx, cy), project(RW, 0, 0, cx, cy),
+      project(RW, 0, RD, cx, cy), project(0, 0, RD, cx, cy)
+    ], '#e0d2b8');
+
+    // Floor wood grain lines
+    ctx.strokeStyle = 'rgba(180,150,120,0.2)';
+    ctx.lineWidth = 1;
+    for (let i = 60; i < RW; i += 60) {
+      const a = project(i, 0, 0, cx, cy);
+      const b = project(i, 0.5, RD, cx, cy);
+      ctx.beginPath(); ctx.moveTo(a.sx, a.sy); ctx.lineTo(b.sx, b.sy); ctx.stroke();
+    }
+    for (let j = 50; j < RD; j += 50) {
+      const a = project(0, 0, j, cx, cy);
+      const b = project(RW, 0.5, j, cx, cy);
+      ctx.beginPath(); ctx.moveTo(a.sx, a.sy); ctx.lineTo(b.sx, b.sy); ctx.stroke();
+    }
+
+    // Large window with light
+    const wx = 145, wz = 0, ww = 130, wh = 140, wy = 60;
+    const winGrad = ctx.createLinearGradient(0, project(wx,wy,wz,cx,cy).sy, 0, project(wx,wy+wh,wz,cx,cy).sy);
+    winGrad.addColorStop(0, '#dce8f4');
+    winGrad.addColorStop(0.4, '#c8dcf0');
+    winGrad.addColorStop(0.7, '#b8d0e8');
+    winGrad.addColorStop(1, '#d0e0f0');
+    drawPoly(ctx, [
+      project(wx, wy, wz, cx, cy), project(wx+ww, wy, wz, cx, cy),
+      project(wx+ww, wy+wh, wz, cx, cy), project(wx, wy+wh, wz, cx, cy)
+    ], winGrad);
+    // Window frame
+    ctx.strokeStyle = '#f0e8d8'; ctx.lineWidth = 6;
+    const winPts = [
+      project(wx, wy, wz, cx, cy), project(wx+ww, wy, wz, cx, cy),
+      project(wx+ww, wy+wh, wz, cx, cy), project(wx, wy+wh, wz, cx, cy)
+    ];
+    ctx.beginPath(); ctx.moveTo(winPts[0].sx, winPts[0].sy);
+    for (let i=1;i<4;i++) ctx.lineTo(winPts[i].sx, winPts[i].sy);
+    ctx.closePath(); ctx.stroke();
+    // Cross bars
+    ctx.strokeStyle = '#f0e8d8'; ctx.lineWidth = 3;
+    const wh2 = project(wx+ww/2, wy, wz, cx, cy);
+    const wh2b = project(wx+ww/2, wy+wh, wz, cx, cy);
+    ctx.beginPath(); ctx.moveTo(wh2.sx, wh2.sy); ctx.lineTo(wh2b.sx, wh2b.sy); ctx.stroke();
+    const wv2 = project(wx, wy+wh/2, wz, cx, cy);
+    const wv2r = project(wx+ww, wy+wh/2, wz, cx, cy);
+    ctx.beginPath(); ctx.moveTo(wv2.sx, wv2.sy); ctx.lineTo(wv2r.sx, wv2r.sy); ctx.stroke();
+
+    // Sunbeam
+    const beamPts = [
+      project(wx+30, wy+wh+5, 20, cx, cy),
+      project(wx+ww-30, wy+wh+5, 20, cx, cy),
+      project(wx+ww+20, 0, RD-20, cx, cy),
+      project(wx-20, 0, RD-20, cx, cy)
+    ];
+    drawPoly(ctx, beamPts, 'rgba(255,245,220,0.12)');
+
+    // Linen curtains
+    ctx.fillStyle = 'rgba(240,232,218,0.85)';
+    const cl2 = project(wx-12, wy-5, wz, cx, cy);
+    const cl2b = project(wx-12, wy+wh+5, wz, cx, cy);
+    ctx.fillRect(cl2.sx-6, cl2.sy, 12, cl2b.sy-cl2.sy);
+    const cr2 = project(wx+ww+12, wy-5, wz, cx, cy);
+    ctx.fillRect(cr2.sx-6, cr2.sy, 12, cl2b.sy-cl2b.sy);
+    // Curtain rod
+    ctx.strokeStyle = '#c4a882'; ctx.lineWidth = 3;
+    const rodL = project(wx-16, wy-8, wz, cx, cy);
+    const rodR = project(wx+ww+16, wy-8, wz, cx, cy);
+    ctx.beginPath(); ctx.moveTo(rodL.sx, rodL.sy); ctx.lineTo(rodR.sx, rodR.sy); ctx.stroke();
+
+    // Art on left wall
+    const ax = 0, az = 120, aw = 70, ah = 90, ay = 90;
+    drawPoly(ctx, [
+      project(ax, ay, az, cx, cy), project(ax, ay, az+aw, cx, cy),
+      project(ax, ay+ah, az+aw, cx, cy), project(ax, ay+ah, az, cx, cy)
+    ], '#f5ede0');
+    ctx.strokeStyle = '#e0d4c0'; ctx.lineWidth = 4;
+    ctx.stroke();
+    // Inner art
+    drawPoly(ctx, [
+      project(ax, ay+8, az+6, cx, cy), project(ax, ay+8, az+aw-6, cx, cy),
+      project(ax, ay+ah-8, az+aw-6, cx, cy), project(ax, ay+ah-8, az+6, cx, cy)
+    ], '#dcc8a8');
+
+    // Wooden shelf on left wall
+    drawRect3D(ctx, 0, 20, 8, 100, 14, cx, cy, '#d4b896', '#c4a882', '#b09068');
+    drawRect3D(ctx, 0, 60, 8, 80, 14, cx, cy, '#d4b896', '#c4a882', '#b09068');
+    // Books on shelf
+    const bookColors = ['#c4956a','#8da391','#a08060','#b8958a','#7a9a80','#c4a070'];
+    for (let i=0; i<6; i++) {
+      const bx = 2, bz = 28 + i*13, bw = 8, bd = 10, bh = 25 - i*2;
+      drawRect3D(ctx, bx, bz, bw, bd, bh, cx, cy,
+        bookColors[i], bookColors[i], bookColors[i]);
+    }
+
+    // Rug - oval shape on floor (approximated)
+    const rugCX = 200, rugCZ = 180, rugRX = 130, rugRZ = 90;
+    const rugPts = [];
+    for (let a=0; a<Math.PI*2; a+=0.15) {
+      const rx = rugCX + Math.cos(a)*rugRX;
+      const rz = rugCZ + Math.sin(a)*rugRZ;
+      rugPts.push(project(rx, 0.5, rz, cx, cy));
+    }
+    drawPoly(ctx, rugPts, 'rgba(196,168,130,0.3)');
+
+    // Bed - neat, warm wood frame
+    drawRect3D(ctx, 250, 140, 150, 190, 14, cx, cy, '#dcc8a8', '#c8b088', '#b09870');
+    // Mattress
+    drawRect3D(ctx, 254, 144, 142, 182, 42, cx, cy, '#faf6f0', '#f0e8d8', '#e8dcc8');
+    // Pillows
+    drawRect3D(ctx, 258, 148, 55, 45, 14, cx, cy, '#f5f0e8', '#ede4d4', '#e5dac8');
+    drawRect3D(ctx, 340, 148, 50, 42, 14, cx, cy, '#f5f0e8', '#ede4d4', '#e5dac8');
+    // Folded blanket at foot
+    drawRect3D(ctx, 258, 280, 130, 40, 16, cx, cy, '#c4a882', '#b09068', '#a08058');
+    // Throw pillow
+    drawRect3D(ctx, 310, 150, 25, 25, 10, cx, cy, '#8da391', '#7a8a7e', '#6a7a6e');
+
+    // Nightstand - warm wood
+    drawRect3D(ctx, 200, 80, 52, 52, 48, cx, cy, '#d4bc98', '#c4a882', '#b09068');
+    // Lamp
+    drawRect3D(ctx, 214, 94, 24, 24, 4, cx, cy, '#e8dcc8', '#dccfb5', '#d0c0a8');
+    drawRect3D(ctx, 220, 100, 12, 12, 22, cx, cy, '#ede0d0', '#e5d8c4', '#dcc8b0');
+    // Lamp glow
+    const glowPts = [];
+    const glowC = project(226, 24, 106, cx, cy);
+    for (let a=0; a<Math.PI*2; a+=0.1) {
+      glowPts.push({sx: glowC.sx + Math.cos(a)*18, sy: glowC.sy + Math.sin(a)*18 - 8});
+    }
+    drawPoly(ctx, glowPts, 'rgba(255,245,210,0.35)');
+
+    // Plant in corner
+    // Pot
+    drawRect3D(ctx, 120, 60, 30, 30, 35, cx, cy, '#c4956a', '#b08050', '#9a7040');
+    // Leaves (drawn as circles)
+    const plantBase = project(135, 36, 75, cx, cy);
+    const leafColors = ['#8da391','#7a9a7e','#9ab89e','#6b8b68','#a0c0a0'];
+    for (let i=0; i<5; i++) {
+      const lx = plantBase.sx + (i-2)*14;
+      const ly = plantBase.sy - 15 - Math.abs(i-2)*8;
+      ctx.beginPath();
+      ctx.ellipse(lx, ly, 16, 28, (i-2)*0.2, 0, Math.PI*2);
+      ctx.fillStyle = leafColors[i];
+      ctx.fill();
+    }
+  }
+
+  // ═══════════════════ BEFORE/AFTER COMPARISON ═══════════════════
+  function setupComparison() {
+    const container = document.getElementById('compContainer');
+    const beforeCanvas = document.getElementById('compBeforeCanvas');
+    const afterCanvas = document.getElementById('compAfterCanvas');
+    const handle = document.getElementById('compHandle');
+    const knob = document.getElementById('compKnob');
+    const wrapper = document.getElementById('compWrapper');
+
+    function resize() {
+      const rect = container.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      const W = rect.width, H = rect.height;
+      beforeCanvas.width = W * dpr;
+      beforeCanvas.height = H * dpr;
+      afterCanvas.width = W * dpr;
+      afterCanvas.height = H * dpr;
+      beforeCanvas.style.width = W + 'px';
+      beforeCanvas.style.height = H + 'px';
+      afterCanvas.style.width = W + 'px';
+      afterCanvas.style.height = H + 'px';
+      const bctx = beforeCanvas.getContext('2d');
+      bctx.scale(dpr, dpr);
+      drawBeforeRoom(bctx, W, H);
+      const actx = afterCanvas.getContext('2d');
+      actx.scale(dpr, dpr);
+      drawAfterRoom(actx, W, H);
+    }
+
+    let clipPercent = 50;
+
+    function updateClip(p) {
+      clipPercent = Math.max(5, Math.min(95, p));
+      afterCanvas.style.clipPath = `inset(0 ${100-clipPercent}% 0 0)`;
+      handle.style.left = clipPercent + '%';
+      knob.style.left = clipPercent + '%';
+    }
+
+    updateClip(50);
+
+    let dragging = false;
+
+    function onMove(e) {
+      if (!dragging) return;
+      e.preventDefault();
+      const rect = container.getBoundingClientRect();
+      const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+      updateClip((x / rect.width) * 100);
+    }
+
+    container.addEventListener('mousedown', (e) => { dragging = true; e.preventDefault(); });
+    container.addEventListener('touchstart', (e) => { dragging = true; });
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('touchmove', onMove, {passive: false});
+    window.addEventListener('mouseup', () => { dragging = false; });
+    window.addEventListener('touchend', () => { dragging = false; });
+
+    window.addEventListener('resize', () => {
+      resize();
+      updateClip(clipPercent);
+    });
+
+    resize();
+  }
+
+  // ═══════════════════ 3D ISOMETRIC VIEWER ═══════════════════
+  function setupViewer() {
+    const wrap = document.getElementById('viewerWrap');
+    const canvas = document.getElementById('viewerCanvas');
+    let rotY = 0; // rotation angle in radians
+    let tiltX = 0.35; // slight tilt
+    let zoom = 1;
+    let dragging = false;
+    let lastX = 0, lastY = 0;
+    let autoRotate = true;
+    let autoAngle = 0;
+
+    const RW = 420, RD = 320, RH = 260;
+
+    function rotatePoint(x, y, z, angleY, angleX) {
+      // Rotate around Y axis
+      const midX = RW/2, midZ = RD/2;
+      const dx = x - midX, dz = z - midZ;
+      const cosA = Math.cos(angleY), sinA = Math.sin(angleY);
+      const rx = dx * cosA - dz * sinA + midX;
+      const rz = dx * sinA + dz * cosA + midZ;
+      // Tilt
+      const cosT = Math.cos(angleX), sinT = Math.sin(angleX);
+      const ry = y * cosT - rz * sinT;
+      const rz2 = y * sinT + rz * cosT;
+      return { x: rx, y: ry, z: rz2 };
+    }
+
+    function proj(x, y, z, cx, cy, s) {
+      const r = rotatePoint(x, y, z, rotY, tiltX);
+      return {
+        sx: cx + (r.x - r.z) * cos30 * s,
+        sy: cy + (r.x + r.z) * sin30 * s - r.y * s
+      };
+    }
+
+    function render() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      const W = rect.width, H = rect.height;
+      if (canvas.width !== W*dpr || canvas.height !== H*dpr) {
+        canvas.width = W * dpr;
+        canvas.height = H * dpr;
+        canvas.style.width = W + 'px';
+        canvas.style.height = H + 'px';
+      }
+      const ctx = canvas.getContext('2d');
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+      ctx.clearRect(0, 0, W, H);
+
+      const cx = W/2, cy = H/2 + 30;
+      const s = zoom * 0.85;
+
+      function p(x,y,z) { return proj(x,y,z,cx,cy,s); }
+      function dp(pts, fill) { drawPoly(ctx, pts, fill); }
+
+      // ── Draw in back-to-front order ──
+
+      // Back wall
+      dp([p(0,0,0),p(RW,0,0),p(RW,RH,0),p(0,RH,0)], '#f5efe8');
+      // Left wall
+      dp([p(0,0,0),p(0,0,RD),p(0,RH,RD),p(0,RH,0)], '#ede4d6');
+      // Floor
+      dp([p(0,0,0),p(RW,0,0),p(RW,0,RD),p(0,0,RD)], '#e0d2b8');
+
+      // Floor grain
+      ctx.strokeStyle = 'rgba(180,150,120,0.15)'; ctx.lineWidth = 0.8;
+      for (let i=60; i<RW; i+=60) {
+        const a=p(i,0.5,0), b=p(i,0.5,RD);
+        ctx.beginPath(); ctx.moveTo(a.sx,a.sy); ctx.lineTo(b.sx,b.sy); ctx.stroke();
+      }
+
+      // Window
+      const wx=145, wz=0, ww=130, wh=140, wy=60;
+      dp([p(wx,wy,wz),p(wx+ww,wy,wz),p(wx+ww,wy+wh,wz),p(wx,wy+wh,wz)], '#dce8f4');
+      ctx.strokeStyle = '#f0e8d8'; ctx.lineWidth = 5;
+      ctx.beginPath();
+      const wp0=p(wx,wy,wz),wp1=p(wx+ww,wy,wz),wp2=p(wx+ww,wy+wh,wz),wp3=p(wx,wy+wh,wz);
+      ctx.moveTo(wp0.sx,wp0.sy);ctx.lineTo(wp1.sx,wp1.sy);
+      ctx.lineTo(wp2.sx,wp2.sy);ctx.lineTo(wp3.sx,wp3.sy);
+      ctx.closePath();ctx.stroke();
+
+      // Sunbeam
+      dp([p(wx+30,wy+wh+5,20),p(wx+ww-30,wy+wh+5,20),p(wx+ww+20,0,RD-20),p(wx-20,0,RD-20)], 'rgba(255,245,220,0.1)');
+
+      // Curtains
+      ctx.fillStyle = 'rgba(240,232,218,0.85)';
+      const clt=p(wx-10,wy-3,wz), clb=p(wx-10,wy+wh+3,wz);
+      ctx.fillRect(clt.sx-5, clt.sy, 10, clb.sy-clt.sy);
+      const crt=p(wx+ww+10,wy-3,wz);
+      ctx.fillRect(crt.sx-5, crt.sy, 10, clb.sy-clb.sy);
+
+      // Art
+      const ax=0, az=120, aw=70, ah=90, ay=90;
+      dp([p(ax,ay,az),p(ax,ay,az+aw),p(ax,ay+ah,az+aw),p(ax,ay+ah,az)], '#f5ede0');
+      ctx.strokeStyle='#e0d4c0';ctx.lineWidth=3;
+      ctx.stroke();
+
+      // Shelf
+      function box(x,z,w,d,h,tc,fc,sc) {
+        const top=[p(x,h,z),p(x+w,h,z),p(x+w,h,z+d),p(x,h,z+d)];
+        const front=[p(x,0,z+d),p(x+w,0,z+d),p(x+w,h,z+d),p(x,h,z+d)];
+        const side=[p(x+w,0,z),p(x+w,0,z+d),p(x+w,h,z+d),p(x+w,h,z)];
+        if(sc)dp(side,sc); if(fc)dp(front,fc); if(tc)dp(top,tc);
+      }
+      box(0,20,8,100,14,'#d4b896','#c4a882','#b09068');
+      box(0,60,8,80,14,'#d4b896','#c4a882','#b09068');
+
+      // Books
+      const bcolors=['#c4956a','#8da391','#a08060','#b8958a','#7a9a80'];
+      for(let i=0;i<5;i++){ box(2,28+i*12,7,10,24-i*2,bcolors[i],bcolors[i],bcolors[i]); }
+
+      // Rug
+      const rugPts=[];
+      for(let a=0;a<Math.PI*2;a+=0.15){
+        rugPts.push(p(200+Math.cos(a)*130,0.5,180+Math.sin(a)*90));
+      }
+      dp(rugPts,'rgba(196,168,130,0.3)');
+
+      // Bed
+      box(250,140,150,190,14,'#dcc8a8','#c8b088','#b09870');
+      box(254,144,142,182,42,'#faf6f0','#f0e8d8','#e8dcc8');
+      // Pillows
+      box(258,148,55,45,14,'#f5f0e8','#ede4d4','#e5dac8');
+      box(340,148,50,42,14,'#f5f0e8','#ede4d4','#e5dac8');
+      // Blanket
+      box(258,280,130,40,16,'#c4a882','#b09068','#a08058');
+      // Throw
+      box(310,150,25,25,10,'#8da391','#7a8a7e','#6a7a6e');
+
+      // Nightstand
+      box(200,80,52,52,48,'#d4bc98','#c4a882','#b09068');
+      box(214,94,24,24,4,'#e8dcc8','#dccfb5','#d0c0a8');
+      box(220,100,12,12,22,'#ede0d0','#e5d8c4','#dcc8b0');
+
+      // Lamp glow
+      const glowC=p(226,24,106);
+      const glowPts=[];
+      for(let a=0;a<Math.PI*2;a+=0.1){
+        glowPts.push({sx:glowC.sx+Math.cos(a)*16,sy:glowC.sy+Math.sin(a)*14-6});
+      }
+      dp(glowPts,'rgba(255,245,210,0.3)');
+
+      // Plant
+      box(130,50,30,30,32,'#c4956a','#b08050','#9a7040');
+      const plantB=p(145,33,65);
+      const leafCols=['#8da391','#7a9a7e','#9ab89e','#6b8b68','#a0c0a0'];
+      for(let i=0;i<5;i++){
+        ctx.beginPath();
+        ctx.ellipse(plantB.sx+(i-2)*12,plantB.sy-14-Math.abs(i-2)*7,14,24,(i-2)*0.2,0,Math.PI*2);
+        ctx.fillStyle=leafCols[i];ctx.fill();
+      }
+    }
+
+    function animate() {
+      if (autoRotate && !dragging) {
+        autoAngle += 0.004;
+        rotY = Math.sin(autoAngle) * 0.5;
+        render();
+      }
+      requestAnimationFrame(animate);
+    }
+
+    wrap.addEventListener('mousedown', (e) => {
+      dragging = true; autoRotate = false;
+      lastX = e.clientX; lastY = e.clientY;
+      e.preventDefault();
+    });
+    wrap.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        dragging = true; autoRotate = false;
+        lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
+      }
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (!dragging) return;
+      rotY += (e.clientX - lastX) * 0.008;
+      tiltX += (e.clientY - lastY) * 0.005;
+      tiltX = Math.max(-0.5, Math.min(1.2, tiltX));
+      lastX = e.clientX; lastY = e.clientY;
+      render();
+    });
+    window.addEventListener('touchmove', (e) => {
+      if (!dragging) return;
+      rotY += (e.touches[0].clientX - lastX) * 0.008;
+      tiltX += (e.touches[0].clientY - lastY) * 0.005;
+      tiltX = Math.max(-0.5, Math.min(1.2, tiltX));
+      lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
+      render();
+    }, {passive: false});
+    window.addEventListener('mouseup', () => {
+      if (dragging) { dragging = false; setTimeout(() => { autoRotate = true; }, 1500); }
+    });
+    window.addEventListener('touchend', () => {
+      if (dragging) { dragging = false; setTimeout(() => { autoRotate = true; }, 1500); }
+    });
+    wrap.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      zoom = Math.max(0.5, Math.min(1.8, zoom - e.deltaY * 0.001));
+      render();
+    });
+
+    window.addEventListener('resize', render);
+    render();
+    animate();
+  }
+
+  // ═══════════════════ NAVIGATION ═══════════════════
+  const navLinks = document.querySelectorAll('nav a');
+  const sections = document.querySelectorAll('section, footer');
+  function updateNav() {
+    let current = '';
+    sections.forEach(sec => {
+      if (sec.getBoundingClientRect().top <= window.innerHeight * 0.4) current = sec.id;
+    });
+    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href')==='#'+current));
+  }
+  window.addEventListener('scroll', updateNav, {passive: true});
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.querySelector(link.getAttribute('href'))?.scrollIntoView({behavior:'smooth'});
+    });
+  });
+
+  // ═══════════════════ REVEAL ═══════════════════
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, {threshold:0.15, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+  // ═══════════════════ INIT ═══════════════════
+  setupComparison();
+  setupViewer();
+})();
+</script>
+</body>
+</html>

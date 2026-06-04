@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数据恢复工具 — 造梦档案馆</title>
+<style>
+  :root {
+    --bg: #1a1816;
+    --panel: #252320;
+    --border: #3d3833;
+    --gold: #d4b87a;
+    --text: #d4cfc7;
+    --text-dim: #8a8680;
+    --green: #7a9a7a;
+    --red: #c46a5a;
+    --blue: #7a8aba;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Noto Sans SC', 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 { font-family: 'Noto Serif SC', serif; font-size: 1.8rem; color: var(--gold); margin-bottom: 4px; }
+  .subtitle { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 32px; }
+
+  .status-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+  .status-card h2 { font-size: 1.1rem; margin-bottom: 12px; color: var(--gold); }
+  .status-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .status-row:last-child { border-bottom: none; }
+  .status-label { color: var(--text-dim); }
+  .status-value { font-family: monospace; }
+  .status-value.good { color: var(--green); }
+  .status-value.bad { color: var(--red); }
+
+  .data-preview {
+    background: #0d0d0d;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    font-family: monospace;
+    font-size: 0.8rem;
+    max-height: 300px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    margin-top: 12px;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+    margin-right: 8px;
+    margin-bottom: 8px;
+  }
+  .btn-primary { background: var(--gold); color: #1a1816; }
+  .btn-primary:hover { background: #e0c68a; }
+  .btn-secondary { background: var(--panel); color: var(--text); border: 1px solid var(--border); }
+  .btn-secondary:hover { background: #2d2a26; }
+  .btn-danger { background: var(--red); color: white; }
+  .btn-danger:hover { background: #d47464; }
+
+  .project-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .project-card h3 { color: var(--gold); margin-bottom: 8px; }
+  .project-card .field { margin: 4px 0; }
+  .project-card .field label { color: var(--text-dim); font-size: 0.8rem; }
+  .project-card .field span { font-family: monospace; font-size: 0.85rem; word-break: break-all; }
+
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--green);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s;
+    pointer-events: none;
+    z-index: 999;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  .warning-box {
+    background: rgba(212, 184, 122, 0.08);
+    border: 1px solid rgba(212, 184, 122, 0.3);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+  .warning-box p { margin: 4px 0; }
+  .warning-box strong { color: var(--gold); }
+
+  hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🩺 数据恢复工具</h1>
+  <p class="subtitle">造梦档案馆 — 诊断 localStorage 数据状态 &amp; 恢复丢失的作品</p>
+
+  <div class="warning-box" id="warningBox" style="display:none;">
+    <p><strong>⚠ 重要：</strong>此页面只读取数据，不会修改或删除任何内容。</p>
+    <p>如果你看到了你的视频数据，请立即点击 <strong>"下载数据备份 (JSON)"</strong> 保存到电脑！</p>
+  </div>
+
+  <!-- Status -->
+  <div class="status-card">
+    <h2>📄 data.json 状态</h2>
+    <div class="status-row">
+      <span class="status-label">文件存在</span>
+      <span class="status-value" id="jsonExists">检测中...</span>
+    </div>
+    <div class="status-row">
+      <span class="status-label">数据可解析</span>
+      <span class="status-value" id="jsonParsable">-</span>
+    </div>
+    <div class="status-row">
+      <span class="status-label">图片项目数</span>
+      <span class="status-value" id="jsonImages">-</span>
+    </div>
+    <div class="status-row">
+      <span class="status-label">视频项目数</span>
+      <span class="status-value" id="jsonVideos">-</span>
+    </div>
+    <div class="status-row">
+      <span class="status-label">最后修改时间</span>
+      <span class="status-value" id="jsonTime">-</span>
+    </div>
+  </div>
+
+  <div class="status-card">
+    <h2>📊 localStorage 状态</h2>
+    <div class="status-row">
+      <span class="status-label">存储键名</span>
+      <span class="status-value">dreamarchive_data</span>
+    </div>
+    <div class="status-row">
+      <span class="status-label">数据是否存在</span>
+      <span class="status-value" id="dataExists">检测中...</span>
+    </div>
+    <div class="status-row">
+      <span class="status-label">数据大小</span>
+      <span class="status-value" id="dataSize">-</span>
+    </div>
+    <div class="status-row">
+      <span class="status-label">localStorage 总用量</span>
+      <span class="status-value" id="totalUsage">-</span>
+    </div>
+    <div class="status-row">
+      <span class="status-label">localStorage 剩余空间</span>
+      <span class="status-value" id="remaining">-</span>
+    </div>
+    <div class="status-row">
+      <span class="status-label">数据可解析</span>
+      <span class="status-value" id="dataParsable">-</span>
+    </div>
+  </div>
+
+  <!-- Image Projects Found -->
+  <div class="status-card" id="imageProjectsCard" style="display:none;">
+    <h2>🖼️ 找到的图片作品</h2>
+    <div id="imageProjectsList"></div>
+    <div class="status-row" style="margin-top:12px;">
+      <span class="status-label">图片作品数量</span>
+      <span class="status-value good" id="imageCount">0</span>
+    </div>
+  </div>
+
+  <!-- Video Projects Found -->
+  <div class="status-card" id="videoProjectsCard" style="display:none;">
+    <h2>🎬 找到的视频作品</h2>
+    <div id="videoProjectsList"></div>
+    <div class="status-row" style="margin-top:12px;">
+      <span class="status-label">视频作品数量</span>
+      <span class="status-value good" id="videoCount">0</span>
+    </div>
+    <div class="status-row">
+      <span class="status-label">有视频URL的作品</span>
+      <span class="status-value" id="videosWithUrl">0</span>
+    </div>
+  </div>
+
+  <!-- Raw Data -->
+  <div class="status-card">
+    <h2>🔍 原始数据预览 (前2000字符)</h2>
+    <div class="data-preview" id="rawData">加载中...</div>
+  </div>
+
+  <!-- All localStorage keys -->
+  <div class="status-card">
+    <h2>🗂️ 所有 localStorage 键</h2>
+    <div class="data-preview" id="allKeys">加载中...</div>
+  </div>
+
+  <!-- Actions -->
+  <div class="status-card">
+    <h2>🛠️ 操作</h2>
+    <button class="btn btn-primary" onclick="downloadBackup()">💾 下载完整备份</button>
+    <button class="btn btn-primary" onclick="downloadDataJson()" style="background:#c46a5a;">📦 下载 data.json</button>
+    <button class="btn btn-secondary" onclick="copyData()">📋 复制原始数据</button>
+    <button class="btn btn-secondary" onclick="location.reload()">🔄 重新检测</button>
+    <hr>
+    <p style="color:var(--text-dim);font-size:0.85rem;margin-top:12px;">
+      <strong>恢复步骤：</strong><br>
+      1. 如果上方显示找到了视频数据 → 点击"下载数据备份"保存 JSON 文件<br>
+      2. 回到 <code>index.html</code> → 按 E 进入编辑模式<br>
+      3. 在编辑面板中使用恢复功能导入数据（稍后添加导入按钮）
+    </p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const STORAGE_KEY = 'dreamarchive_data';
+  const DB_NAME = 'DreamArchiveDB';
+  const DB_VERSION = 1;
+  const DB_STORE = 'projects';
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._t);
+    t._t = setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  // ── IndexedDB helpers ─────────────────────────────────────
+  function openIDB() {
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open(DB_NAME, DB_VERSION);
+      req.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains(DB_STORE)) {
+          db.createObjectStore(DB_STORE, { keyPath: 'key' });
+        }
+      };
+      req.onsuccess = (e) => resolve(e.target.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  function idbGet(db, key) {
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(DB_STORE, 'readonly');
+      const store = tx.objectStore(DB_STORE);
+      const req = store.get(key);
+      req.onsuccess = () => resolve(req.result ? req.result.value : null);
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  function idbGetAll(db) {
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(DB_STORE, 'readonly');
+      const store = tx.objectStore(DB_STORE);
+      const req = store.getAll();
+      req.onsuccess = () => {
+        const result = {};
+        (req.result || []).forEach(item => { result[item.key] = item.value; });
+        resolve(result);
+      };
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  // Parse and display project data
+  function displayProjects(data, source) {
+    const el = document.getElementById('rawData');
+    const preview = data.substring(0, 2000) + (data.length > 2000 ? '\n\n... (截断，共 ' + data.length + ' 字符)' : '');
+
+    try {
+      const parsed = JSON.parse(data);
+      document.getElementById('dataParsable').textContent = '✅ 可解析';
+      document.getElementById('dataParsable').className = 'status-value good';
+      document.getElementById('warningBox').style.display = 'block';
+
+      // Image projects
+      if (parsed.imageProjects && Array.isArray(parsed.imageProjects)) {
+        const card = document.getElementById('imageProjectsCard');
+        card.style.display = '';
+        document.getElementById('imageCount').textContent = parsed.imageProjects.length;
+        const list = document.getElementById('imageProjectsList');
+        list.innerHTML = parsed.imageProjects.map((p, i) => `
+          <div class="project-card">
+            <h3>#${i+1} ${p.title || '(无标题)'}</h3>
+            <div class="field"><label>ID:</label> <span>${p.id || '?'}</span></div>
+            <div class="field"><label>封面图:</label> <span>${(p.image || '').substring(0, 80)}${(p.image || '').length > 80 ? '...' : ''}</span></div>
+            <div class="field"><label>年份:</label> <span>${p.year || '?'}</span></div>
+          </div>
+        `).join('');
+      }
+
+      // Video projects
+      if (parsed.videoProjects && Array.isArray(parsed.videoProjects)) {
+        const card = document.getElementById('videoProjectsCard');
+        card.style.display = '';
+        document.getElementById('videoCount').textContent = parsed.videoProjects.length;
+        const withUrl = parsed.videoProjects.filter(p => p.videoUrl && p.videoUrl.length > 0);
+        document.getElementById('videosWithUrl').textContent = withUrl.length;
+        const list = document.getElementById('videoProjectsList');
+        list.innerHTML = parsed.videoProjects.map((p, i) => {
+          const hasVideo = p.videoUrl && p.videoUrl.length > 0;
+          const isDataUrl = hasVideo && p.videoUrl.startsWith('data:');
+          const urlPreview = hasVideo
+            ? (isDataUrl ? `data:video/... (${(p.videoUrl.length / 1024 / 1024).toFixed(2)} MB base64)` : p.videoUrl.substring(0, 100) + (p.videoUrl.length > 100 ? '...' : ''))
+            : '(无视频)';
+          return `
+            <div class="project-card">
+              <h3>#${i+1} ${p.title || '(无标题)'} ${hasVideo ? '✅ 有视频' : '⚠ 无视频URL'}</h3>
+              <div class="field"><label>ID:</label> <span>${p.id || '?'}</span></div>
+              <div class="field"><label>视频URL:</label> <span style="color:${hasVideo ? 'var(--green)' : 'var(--red)'}">${urlPreview}</span></div>
+              <div class="field"><label>缩略图:</label> <span>${(p.thumbnail || '').substring(0, 80)}${(p.thumbnail || '').length > 80 ? '...' : ''}</span></div>
+              <div class="field"><label>年份:</label> <span>${p.year || '?'}</span></div>
+              <div class="field"><label>分镜数:</label> <span>${(p.storyboards || []).length}</span></div>
+            </div>
+          `;
+        }).join('');
+      }
+    } catch (e) {
+      document.getElementById('dataParsable').textContent = '❌ 解析失败: ' + e.message;
+      document.getElementById('dataParsable').className = 'status-value bad';
+    }
+  }
+
+  // ── Main analyze ──────────────────────────────────────────
+  async function analyze() {
+    // Check data.json first
+    try {
+      const resp = await fetch('data.json?v=' + Date.now());
+      if (resp.ok) {
+        const text = await resp.text();
+        const jsonData = JSON.parse(text);
+        document.getElementById('jsonExists').textContent = '✅ 存在';
+        document.getElementById('jsonExists').className = 'status-value good';
+        document.getElementById('jsonParsable').textContent = '✅ 可解析';
+        document.getElementById('jsonParsable').className = 'status-value good';
+        document.getElementById('jsonImages').textContent = (jsonData.imageProjects || []).length;
+        document.getElementById('jsonVideos').textContent = (jsonData.videoProjects || []).length;
+        document.getElementById('jsonTime').textContent = jsonData._meta?.lastModified || '未知';
+      } else {
+        document.getElementById('jsonExists').textContent = '❌ HTTP ' + resp.status;
+        document.getElementById('jsonExists').className = 'status-value bad';
+      }
+    } catch(e) {
+      document.getElementById('jsonExists').textContent = '❌ 加载失败';
+      document.getElementById('jsonExists').className = 'status-value bad';
+      document.getElementById('jsonParsable').textContent = e.message.includes('Failed to fetch') ? '需要本地服务器 (npx serve .)' : e.message;
+    }
+
+    // localStorage usage
+    let lsBytes = 0;
+    const lsKeys = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      lsKeys.push(k);
+      lsBytes += (k.length + (localStorage.getItem(k) || '').length) * 2;
+    }
+    document.getElementById('allKeys').textContent = 'localStorage:\n' + (lsKeys.length ? lsKeys.join('\n') : '(空)');
+
+    // Check IndexedDB
+    let idbData = null, idbBackup = null, idbKeys = [];
+    try {
+      const db = await openIDB();
+      const all = await idbGetAll(db);
+      idbKeys = Object.keys(all);
+
+      let keysText = 'IndexedDB (' + DB_NAME + '):\n';
+      if (idbKeys.length) {
+        keysText += idbKeys.map(k => `  ${k}: ${(all[k].length / 1024).toFixed(1)} KB`).join('\n');
+      } else {
+        keysText += '  (空)';
+      }
+      document.getElementById('allKeys').textContent += '\n\n' + keysText;
+
+      idbData = all['main'] || null;
+      idbBackup = all['auto_backup'] || null;
+      db.close();
+    } catch(e) {
+      document.getElementById('allKeys').textContent += '\n\nIndexedDB: ❌ 无法访问 (' + e.message + ')';
+    }
+
+    // Get IndexedDB usage
+    let storageInfo = '';
+    try {
+      if (navigator.storage && navigator.storage.estimate) {
+        const est = await navigator.storage.estimate();
+        storageInfo = ` | IndexedDB 总用量: ${(est.usage / 1024 / 1024).toFixed(1)} MB / ${(est.quota / 1024 / 1024).toFixed(0)} MB`;
+      }
+    } catch(_) {}
+
+    document.getElementById('totalUsage').textContent = `localStorage: ${(lsBytes/1024).toFixed(1)} KB${storageInfo}`;
+    document.getElementById('remaining').textContent = `localStorage 约 ${(5 - lsBytes/1024/1024).toFixed(2)} MB 剩余（5MB上限）` + storageInfo;
+
+    // Determine best data source: IndexedDB > localStorage
+    let bestSource = null;
+    let bestData = null;
+
+    if (idbData) { bestSource = 'IndexedDB (main)'; bestData = idbData; }
+    else if (idbBackup) { bestSource = 'IndexedDB (auto_backup)'; bestData = idbBackup; }
+    else {
+      const lsRaw = localStorage.getItem(STORAGE_KEY);
+      if (lsRaw) { bestSource = 'localStorage'; bestData = lsRaw; }
+      else {
+        const lsBackup = localStorage.getItem(STORAGE_KEY + '_backup');
+        if (lsBackup) { bestSource = 'localStorage (_backup)'; bestData = lsBackup; }
+      }
+    }
+
+    const existsEl = document.getElementById('dataExists');
+    const sizeEl = document.getElementById('dataSize');
+
+    if (!bestData) {
+      existsEl.textContent = '❌ 所有存储源均无数据';
+      existsEl.className = 'status-value bad';
+      sizeEl.textContent = 'N/A';
+      document.getElementById('dataParsable').textContent = 'N/A';
+      document.getElementById('rawData').textContent = '⚠ 未在任何存储中找到数据。\n\n已检查:\n- IndexedDB: DreamArchiveDB\n- localStorage: dreamarchive_data\n- localStorage: dreamarchive_data_backup\n\n数据已永久丢失，无法恢复。\n\n建议: 检查下载文件夹中是否有之前自动备份的 JSON 文件。';
+      document.getElementById('warningBox').style.display = 'none';
+      return;
+    }
+
+    existsEl.textContent = '✅ 存在 (来源: ' + bestSource + ')';
+    existsEl.className = 'status-value good';
+    sizeEl.textContent = `${(bestData.length / 1024).toFixed(1)} KB (${(bestData.length / 1024 / 1024).toFixed(2)} MB)`;
+
+    // Show raw preview
+    document.getElementById('rawData').textContent = bestData.substring(0, 2000) + (bestData.length > 2000 ? '\n\n... (截断，共 ' + bestData.length + ' 字符)' : '');
+
+    displayProjects(bestData, bestSource);
+  }
+
+  // ── Download backup (prefer IndexedDB) ────────────────────
+  async function downloadBackup() {
+    // Try IndexedDB first
+    let data = null;
+    try {
+      const db = await openIDB();
+      data = await idbGet(db, 'main');
+      if (!data) data = await idbGet(db, 'auto_backup');
+      db.close();
+    } catch(_) {}
+
+    // Fallback to localStorage
+    if (!data) {
+      data = localStorage.getItem(STORAGE_KEY);
+      if (!data) data = localStorage.getItem(STORAGE_KEY + '_backup');
+    }
+
+    if (!data) {
+      showToast('❌ 所有存储源均无数据可备份');
+      return;
+    }
+
+    // Pretty-print if valid JSON
+    let content = data;
+    try {
+      content = JSON.stringify(JSON.parse(data), null, 2);
+    } catch(e) { /* use raw */ }
+
+    const blob = new Blob([content], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const now = new Date();
+    const stamp = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}_${String(now.getHours()).padStart(2,'0')}-${String(now.getMinutes()).padStart(2,'0')}`;
+    a.download = `dreamarchive_backup_${stamp}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('✅ 备份已下载！请妥善保存此文件');
+  }
+
+  // ── Copy data ─────────────────────────────────────────────
+  async function copyData() {
+    let data = null;
+    try {
+      const db = await openIDB();
+      data = await idbGet(db, 'main');
+      if (!data) data = await idbGet(db, 'auto_backup');
+      db.close();
+    } catch(_) {}
+    if (!data) {
+      data = localStorage.getItem(STORAGE_KEY);
+      if (!data) data = localStorage.getItem(STORAGE_KEY + '_backup');
+    }
+    if (!data) {
+      showToast('❌ 没有数据可复制');
+      return;
+    }
+    navigator.clipboard.writeText(data).then(() => {
+      showToast('✅ 已复制到剪贴板');
+    }).catch(() => {
+      showToast('❌ 复制失败，请手动选择文本');
+    });
+  }
+
+  async function downloadDataJson() {
+    let data = null;
+    // Prefer IndexedDB for latest edits
+    try {
+      const db = await openIDB();
+      const raw = await idbGet(db, 'main');
+      db.close();
+      if (raw) data = raw;
+    } catch(_) {}
+    // Fallback to localStorage
+    if (!data) {
+      data = localStorage.getItem(STORAGE_KEY);
+      if (!data) data = localStorage.getItem(STORAGE_KEY + '_backup');
+    }
+    if (!data) {
+      showToast('❌ 没有数据可导出');
+      return;
+    }
+    try {
+      const parsed = JSON.parse(data);
+      parsed._meta = parsed._meta || {};
+      parsed._meta.lastModified = new Date().toISOString();
+      parsed._meta.version = 2;
+      data = JSON.stringify(parsed, null, 2);
+    } catch(e) {}
+
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'data.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('✅ data.json 已下载 — 请放入项目文件夹替换旧文件');
+  }
+
+  // Run on load
+  analyze();
+</script>
+</body>
+</html>

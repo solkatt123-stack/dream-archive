@@ -1,0 +1,180 @@
+const EMBEDDED_DATA = 
+{
+  "_meta": {
+    "version": 2,
+    "lastModified": "2026-06-03T00:00:00.000Z",
+    "description": "造梦档案馆项目数据 — 编辑后导出替换此文件再部署"
+  },
+  "imageProjects": [
+    {
+      "id": "neon-ruins",
+      "title": "霓虹废墟",
+      "titleEn": "Neon Ruins",
+      "year": "2024",
+      "category": "概念摄影",
+      "image": "images/placeholder-image.svg",
+      "heroImage": "images/placeholder-image.svg",
+      "source": "灵感来自东京夜晚的废弃游乐园。在人类撤离后，机械装置仍在孤独运转，霓虹灯光映照在积水的路面上，形成一种寂静的、后人类时代的诗意。",
+      "pathway": ["废弃游乐场的夜间摄影", "Edward Hopper 的孤独光影", "设定：独处的机械人偶", "潮湿的城市夜景 + 霓虹反射", "低照度、点光源、雾气弥漫", "photorealistic, wet pavement, neon reflection, cinematic lighting, fog, abandoned amusement park, solitary figure"],
+      "notes": ["这张作品的核心在于"孤独的机械灵魂"。", "我反复调整了霓虹灯的色温与强度，让它在潮湿的空气中有适当的扩散感。", "最关键的一步是在提示词中加入"cinematic lighting"与"film grain"，这给画面带来了电影感而非游戏感。", "最终选择了3:4的画幅比例——这是传统中画幅摄影的比例，赋予画面一种永恒的静止感。"]
+    },
+    {
+      "id": "mechanical-garden",
+      "title": "机械花园",
+      "titleEn": "Mechanical Garden",
+      "year": "2024",
+      "category": "数字艺术",
+      "image": "images/placeholder-image.svg",
+      "heroImage": "images/placeholder-image.svg",
+      "source": "探讨自然与机械共生的可能性。想象一个世界，花朵的花瓣由精密齿轮构成，藤蔓是光纤编织的神经网络，在工业废墟上绽放出新的生命形态。",
+      "pathway": ["工业遗址考察 + 植物标本", "H.R. Giger 与 Georgia O'Keeffe 的碰撞", "设定：半机械花卉生命体", "废墟温室，金属与有机体交织", "柔和的漫射光 + 金属表面的微妙反光", "biomechanical flowers, copper petals, gears, greenhouse ruins, soft diffused light, macro photography, organic metal texture"],
+      "notes": ["我想创造一种既陌生又熟悉的美感——你认得出这是一朵花，但它的材质却是金属。", "提示词中"biomechanical"与"organic metal texture"的组合是关键，它在硬与柔之间找到了平衡。", "画面中的光线处理参考了荷兰静物画的质感，让金属花瓣也有温度。"]
+    },
+    {
+      "id": "cloud-portraits",
+      "title": "云端肖像",
+      "titleEn": "Cloud Portraits",
+      "year": "2023",
+      "category": "肖像创作",
+      "image": "images/placeholder-image.svg",
+      "heroImage": "images/placeholder-image.svg",
+      "source": "一组不存在的肖像照。每个人物都是一个虚构的身份，但拥有真实的情感密度。他们的面孔存在于云层与数据的间隙中——介于存在与不存在之间。",
+      "pathway": ["August Sander 的纪实肖像", "Irving Penn 的影棚肖像", "设定：不同时代、不同身份的虚构人物", "极简影棚，云雾与光影作为唯一道具", "单光源 + 柔光箱质感 + 深色背景", "studio portrait, single light source, shallow depth of field, atmospheric, subtle grain, timeless quality"],
+      "notes": ["这组作品最难的地方在于"让不存在的人看起来像存在过"。", "每一张肖像我都花了很多时间调整眼神——眼神决定了这个虚构人物是否可信。", "我参考了Irving Penn的肖像作品，他的照片总能让人物在极简的背景下呈现出强烈的存在感。"]
+    },
+    {
+      "id": "time-folds",
+      "title": "时间褶皱",
+      "titleEn": "Time Folds",
+      "year": "2024",
+      "category": "实验影像",
+      "image": "images/placeholder-image.svg",
+      "heroImage": "images/placeholder-image.svg",
+      "source": "灵感来自地质层的纹理与老照片的褪色。时间不是线性的——它在某些地方折叠、堆积、沉淀。这组作品试图将时间的褶皱视觉化。",
+      "pathway": ["地质学影像 + 褪色的家庭相册", "杉本博司的长时间曝光", "设定：时间的物理形态", "层叠的地质纹理 + 模糊的人影", "极低对比度 + 褪色色调 + 长时间曝光模拟", "long exposure, layered textures, faded photograph, geological strata, ghostly figures, sepia tone, ethereal"],
+      "notes": ["这是我个人最喜欢的一组作品。", "褪色不是技术缺陷，而是一种美学选择——它暗示了记忆的不完整性。", "在处理光影时，我刻意压低了对比度，让画面中的元素仿佛正在彼此溶解。"]
+    },
+    {
+      "id": "silent-city",
+      "title": "寂静城市",
+      "titleEn": "Silent City",
+      "year": "2023",
+      "category": "建筑摄影",
+      "image": "images/placeholder-image.svg",
+      "heroImage": "images/placeholder-image.svg",
+      "source": "一个没有人类声音的城市。建筑本身成为主角——混凝土、玻璃与钢铁在寂静中展现出一种纪念碑般的庄严。这是城市的肖像，而非城市中的人的肖像。",
+      "pathway": ["现代主义建筑摄影", "Bernd & Hilla Becher 的类型学摄影", "设定：无人的巨型城市", "极简建筑立面 + 空旷广场", "阴天柔光 + 对称构图 + 长焦压缩", "architectural photography, brutalist, overcast, symmetrical composition, devoid of people, monumental scale, mist"],
+      "notes": ["无人城市的概念很容易走向反乌托邦，但我更感兴趣的是建筑本身的静默之美。", "构图是这组作品的核心——每一张都采用了严格的对称或黄金比例分割。", "雾气的使用让远处的建筑若隐若现，增加了空间的层次感和神秘感。"]
+    },
+    {
+      "id": "dream-specimens",
+      "title": "梦境标本",
+      "titleEn": "Dream Specimens",
+      "year": "2024",
+      "category": "混合媒介",
+      "image": "images/placeholder-image.svg",
+      "heroImage": "images/placeholder-image.svg",
+      "source": "如果把梦境做成标本会是什么样子？这组作品将梦境的碎片——色彩、形状、情绪——封存在透明的介质中，像自然历史博物馆里的标本柜。",
+      "pathway": ["自然历史博物馆的标本陈列", "Joseph Cornell 的盒子艺术", "设定：梦境碎片的物理形态", "标本柜 + 悬浮物 + 柔和的实验室光线", "顶光 + 玻璃折射 + 微距质感", "specimen display, glass vitrine, suspended objects, soft laboratory lighting, macro detail, surreal natural history, ethereal"],
+      "notes": ["这组作品跨越了摄影与装置的边界——每一件看起来都像是一张实体的标本照片。", "在提示词中加入了"museum display"和"glass vitrine"后，AI理解了我想要的那种"被观看"的感觉。", "柔和而精准的实验室光线是营造"标本感"的关键。"]
+    },
+    {
+      "id": "light-archaeology",
+      "title": "光影考古",
+      "titleEn": "Light Archaeology",
+      "year": "2023",
+      "category": "光影实验",
+      "image": "images/placeholder-image.svg",
+      "heroImage": "images/placeholder-image.svg",
+      "source": "光影是时间的化石。一束光穿过空间的方式，记录了它所穿越的一切。这组作品将光线当作考古对象——挖掘、分层、重建。",
+      "pathway": ["James Turrell 的光空间", "古典绘画中的明暗对照法", "设定：光作为实体材料", "黑暗空间 + 精确的光束切割", "极强光影对比 + 丁达尔效应 + 尘埃可见", "chiaroscuro, volumetric light, dust particles in light beam, dark interior, single light source, cinematic, atmospheric"],
+      "notes": ["这是技术上最具挑战性的一组。光线在AI生成中常常是"平的"，需要非常精确的描述才能获得体积感。", ""volumetric light"和"dust particles"的组合是制造空间深度的秘诀。", "每张作品的光源位置都经过精心设计——让视线随着光束移动，在画面中完成一次"考古"。"]
+    },
+    {
+      "id": "fictional-memories",
+      "title": "虚构记忆",
+      "titleEn": "Fictional Memories",
+      "year": "2024",
+      "category": "叙事摄影",
+      "image": "images/placeholder-image.svg",
+      "heroImage": "images/placeholder-image.svg",
+      "source": "记忆并不总是可靠的。它们变形、重组、被修饰。这组作品创造了一组"从未发生但感觉真实"的记忆画面——仿佛从某本旧相册中滑落。",
+      "pathway": ["家庭相册与老照片的质感研究", "Nan Goldin 的亲密摄影", "设定：无法考证的记忆片段", "日常生活场景 + 时间痕迹", "自然光 + 褪色 + 轻微过曝 + 胶片质感", "candid photography, nostalgic, faded polaroid, natural window light, intimate moment, film grain, 35mm film aesthetic"],
+      "notes": ["这组作品的创作过程中，我像一个收集他人记忆的人。", "每一张照片都努力营造一种"你曾经经历过这个瞬间"的既视感。", "胶片质感和轻微的过曝是最重要的视觉语言——它让画面看起来像是被时间柔化了。"]
+    }
+  ],
+  "videoProjects": [
+    {
+      "id": "beyond-time",
+      "title": "时间之外的片刻",
+      "titleEn": "A Moment Beyond Time",
+      "year": "2024",
+      "category": "实验短片",
+      "thumbnail": "images/placeholder-video.svg",
+      "videoUrl": "",
+      "storyboards": [
+        { "img": "images/placeholder-storyboard.svg", "label": "SCENE 01 — 开篇" },
+        { "img": "images/placeholder-storyboard.svg", "label": "SCENE 02 — 展开" },
+        { "img": "images/placeholder-storyboard.svg", "label": "SCENE 03 — 转折" },
+        { "img": "images/placeholder-storyboard.svg", "label": "SCENE 04 — 高潮" },
+        { "img": "images/placeholder-storyboard.svg", "label": "SCENE 05 — 尾声" }
+      ],
+      "scriptText": "SCENE 01 — 开篇\n一座古老的钟楼内部。巨大的齿轮缓慢转动。光线从高窗倾泻而下，尘埃在光束中缓缓飘浮。时间仿佛凝固。\n\nSCENE 02 — 展开\n镜头缓慢推进，穿越层层叠叠的时钟齿轮。每一层齿轮的转速都不同——有的疾速旋转，有的静止不动。声音：齿轮的咔嗒声渐次叠加，形成一种催眠般的节奏。\n\nSCENE 03 — 转折\n画面突然静止。所有齿轮停止转动。一片羽毛从画面外飘入，落在最大的齿轮上。声音：完全的寂静，只有羽毛落下的细微声响。\n\nSCENE 04 — 高潮\n齿轮开始逆向旋转。画面的颜色逐渐褪去，变成古典的黑白影像，然后变为负片。时间正在被"倒带"。\n\nSCENE 05 — 尾声\n镜头拉远。整个钟楼变成一个发光的点，悬浮在无尽的黑暗之中。字幕浮现："时间从未流逝。流逝的是我们。"",
+      "breakdown": [
+        { "label": "创意概念", "text": "将"时间"这一抽象概念可视化。不依赖叙事，而是通过纯粹的视觉节奏来唤起观众对时间流逝的感知。核心意象：钟楼、齿轮、羽毛。" },
+        { "label": "视觉语言", "text": "采用古典油画的影调，强调光影的戏剧性。色彩从温暖的金色调逐渐过渡到冷峻的银灰，最终褪色为黑白。镜头运动极其缓慢，模拟雕塑般的视觉体验。" },
+        { "label": "镜头设计", "text": "全程单一长镜头形式，从细节特写缓慢拉远至全景。镜头运动速度经过精心设计——在关键时刻几乎静止，制造"时间暂停"的错觉。" },
+        { "label": "情绪节奏", "text": "从宁静→好奇→紧张→释放→沉思。通过齿轮转速变化、声音密度和画面色调来调控情绪曲线，而非依赖情节推动。" },
+        { "label": "AI 工作流", "text": "使用 Midjourney 生成关键帧画面 → Runway Gen-2 生成动态影像 → 手动剪辑与调色 → 后期音效设计与混音 → DaVinci Resolve 最终输出。" }
+      ]
+    },
+    {
+      "id": "mechanical-ballet",
+      "title": "机械芭蕾",
+      "titleEn": "Mechanical Ballet",
+      "year": "2023",
+      "category": "动态影像",
+      "thumbnail": "images/placeholder-video.svg",
+      "videoUrl": "",
+      "storyboards": [
+        { "img": "images/placeholder-storyboard.svg", "label": "SCENE 01 — 序曲" },
+        { "img": "images/placeholder-storyboard.svg", "label": "SCENE 02 — 独舞" },
+        { "img": "images/placeholder-storyboard.svg", "label": "SCENE 03 — 双人舞" },
+        { "img": "images/placeholder-storyboard.svg", "label": "SCENE 04 — 群舞" }
+      ],
+      "scriptText": "SCENE 01 — 序曲\n黑色空间中，一束光打在舞台中央。一个机械人偶静立不动。它的关节微微发光。音乐：低沉的弦乐拨奏。\n\nSCENE 02 — 独舞\n机械人偶开始缓慢移动。每一个动作都伴随着精密的齿轮声。动作越来越流畅，越来越接近人类的舞蹈。\n\nSCENE 03 — 双人舞\n第二个机械人偶从阴影中浮现。它们开始同步舞蹈——精确到每一帧。镜头的运动也变成舞蹈的一部分。\n\nSCENE 04 — 群舞\n数十个机械人偶出现在舞台上。它们以完全同步的动作舞蹈，形成一种极致的美。最后定格在一个瞬间——所有机械人偶同时静止。",
+      "breakdown": [
+        { "label": "创意概念", "text": "用机械的精确性来诠释芭蕾的形式美。探讨机械与人类身体的边界——当机械的动作变得足够流畅，它与舞蹈之间的界限在哪里？" },
+        { "label": "视觉语言", "text": "高对比度黑白影像，强调金属质感与光影的几何感。舞台采用极简设计，让观众注意力完全集中在"舞者"的动作上。" },
+        { "label": "镜头设计", "text": "镜头本身也是编舞的一部分——它的运动轨迹与人偶的舞蹈动作相呼应。采用轨道般的平滑运动，强调横向与纵向的几何美感。" },
+        { "label": "情绪节奏", "text": "从静止→缓慢苏醒→流畅舞动→激情释放→回归静止。通过动作速度、音乐密度和景别变化来控制节奏。" },
+        { "label": "AI 工作流", "text": "Midjourney 角色与场景设定 → Runway Gen-2 生成基础动态 → 手动逐帧调校关键动作 → 达芬奇调色 → Ableton Live 音效设计。" }
+      ]
+    },
+    {
+      "id": "water-poetry",
+      "title": "水形物语",
+      "titleEn": "The Shape of Water",
+      "year": "2024",
+      "category": "视觉诗",
+      "thumbnail": "images/placeholder-video.svg",
+      "videoUrl": "",
+      "storyboards": [
+        { "img": "images/placeholder-storyboard.svg", "label": "SCENE 01 — 水滴" },
+        { "img": "images/placeholder-storyboard.svg", "label": "SCENE 02 — 涟漪" },
+        { "img": "images/placeholder-storyboard.svg", "label": "SCENE 03 — 流动" },
+        { "img": "images/placeholder-storyboard.svg", "label": "SCENE 04 — 水下" },
+        { "img": "images/placeholder-storyboard.svg", "label": "SCENE 05 — 升华" }
+      ],
+      "scriptText": "SCENE 01 — 水滴\n一滴水从叶尖落下。极致的慢动作——水珠在空气中变形、拉长，表面张力与重力展开一场优雅的角力。\n\nSCENE 02 — 涟漪\n水滴落入湖面。涟漪扩散。镜头跟随涟漪的纹理向外移动。水面映出天空和树木的倒影，随着涟漪扭曲变形。\n\nSCENE 03 — 流动\n镜头潜入水下，跟随水流穿行于岩石与水草之间。水中悬浮的微粒在阳光照射下如同星尘。\n\nSCENE 04 — 水下\n深水区域。光线渐渐变暗。水母般的光体在水中缓慢漂浮。整个画面变成深蓝与银色的抽象画。\n\nSCENE 05 — 升华\n镜头浮出水面。水面上升起薄雾。水滴蒸发，化为看不见的水汽升入空中。循环完成。",
+      "breakdown": [
+        { "label": "创意概念", "text": "以水的三种形态——液态、固态的倒影/涟漪、气态——为线索，创作一部视觉诗。不讲述故事，而是让观众沉浸在水的质感与节奏之中。" },
+        { "label": "视觉语言", "text": "强调水的透明感、表面张力和光影折射。色彩从叶绿→湖蓝→深蓝→银白渐变。大量使用微距与慢动作，将日常的水变成超验的美。" },
+        { "label": "镜头设计", "text": "镜头仿佛也是一滴水——平滑地流动、下落、升起。避免任何突然的运动，所有转场都由水的自然运动驱动。" },
+        { "label": "情绪节奏", "text": "从微观的精确→扩展的舒缓→深沉的静谧→升华的超然。全片保持一种冥想般的节奏，让观众进入一种"水的心流"状态。" },
+        { "label": "AI 工作流", "text": "Midjourney 关键帧 + Luma Dream Machine 生成流体运动 → 手动调色强调水的透明度 → 环境音录制与电子音乐混合 → 最终合成。" }
+      ]
+    }
+  ]
+}
+;
