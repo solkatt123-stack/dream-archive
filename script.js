@@ -2197,7 +2197,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initNavigation();
     Editor.init();
     document.getElementById('landing').classList.add('active');
-    console.log('造梦档案馆 v67 loaded — images:', imageProjects.length, 'videos:', videoProjects.length);
+    console.log('造梦档案馆 v77 loaded — images:', imageProjects.length, 'videos:', videoProjects.length);
   } catch(e) {
     console.error('Init error:', e);
     alert('Loading error: ' + e.message);
