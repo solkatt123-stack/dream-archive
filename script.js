@@ -552,15 +552,17 @@ async function initDataStore() {
     if (!saved.videoProjects) console.warn('[DreamArchive] 视频作品从默认数据恢复');
   }
 
-  // Only use data.js defaults if user has NO existing data (first-time load)
-  // Never merge — respect the user's actual project list
-  if (imageProjects.length === 0 && fileData && fileData.imageProjects) {
-    imageProjects = fileData.imageProjects;
-    console.log('[DreamArchive] 首次加载，使用 data.js 默认图片作品');
-  }
-  if (videoProjects.length === 0 && fileData && fileData.videoProjects) {
-    videoProjects = fileData.videoProjects;
-    console.log('[DreamArchive] 首次加载，使用 data.js 默认视频作品');
+  // If no IndexedDB data, use data.js as primary source
+  // data.js always overrides hardcoded defaults in script.js
+  if (!saved && fileData) {
+    if (fileData.imageProjects && fileData.imageProjects.length > 0) {
+      imageProjects = fileData.imageProjects;
+      console.log('[DreamArchive] 加载 data.js 图片作品:', imageProjects.length);
+    }
+    if (fileData.videoProjects && fileData.videoProjects.length > 0) {
+      videoProjects = fileData.videoProjects;
+      console.log('[DreamArchive] 加载 data.js 视频作品:', videoProjects.length);
+    }
   }
 
   // Log storage info
