@@ -292,7 +292,15 @@
 
   <!-- ABOUT: integrated into the landing intro (screens 1-5) -->
 
-  <script src="data.js?v=77"></script>
-  <script src="script.js?v=77"></script>
+  <script src="data.js?v=99"></script>
+  <script src="script.js?v=99"></script>
+  <!-- 紧急兜底：3秒后强制显示着陆页 -->
+  <script>
+  setTimeout(function() {
+    var l = document.getElementById('landing');
+    if (l && !l.classList.contains('active')) { l.classList.add('active'); }
+    console.log('兜底检查完成');
+  }, 3000);
+  </script>
 </body>
 </html>

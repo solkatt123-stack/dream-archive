@@ -2182,18 +2182,27 @@ function initNavigation() {
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    // Load data from IndexedDB/localStorage BEFORE initializing UI
-    await initDataStore();
+    // Load data with 10s timeout
+    await Promise.race([
+      initDataStore(),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('数据加载超时')), 10000))
+    ]);
+  } catch(e) {
+    console.error('Init error:', e);
+    // Continue anyway — landing page must show
+  }
 
+  try {
     ViewManager.init();
     LandingPage.init();
     Parallax.init();
     initNavigation();
     Editor.init();
     document.getElementById('landing').classList.add('active');
-    console.log('造梦档案馆 v77 loaded — images:', imageProjects.length, 'videos:', videoProjects.length);
+    console.log('造梦档案馆 v99 loaded — images:', imageProjects.length, 'videos:', videoProjects.length);
   } catch(e) {
-    console.error('Init error:', e);
-    alert('Loading error: ' + e.message);
+    console.error('UI init error:', e);
+    // Force landing visible
+    document.getElementById('landing').classList.add('active');
   }
 });
