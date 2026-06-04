@@ -11,9 +11,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@200;300;400;500&family=Work+Sans:wght@200;300;400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v=77">
-  <noscript><style>.view{opacity:1!important;pointer-events:all!important;position:relative!important}</style></noscript>
 </head>
-<body style="background:#FAF7F2;color:#3C3832;font-family:sans-serif;">
+<body>
 
   <!-- Version check: v77 — file-based storage with data.json + images/ + videos/ -->
   <!-- ==================== GRAIN OVERLAY ==================== -->
@@ -27,10 +26,7 @@
   </svg>
 
   <!-- ==================== LANDING — Artist Intro ==================== -->
-  <style>
-    #landing { opacity: 1 !important; pointer-events: all !important; }
-  </style>
-  <section id="landing" class="view active" style="opacity:1!important;pointer-events:all!important;display:block!important;visibility:visible!important;">
+  <section id="landing" class="view active">
 
     <!-- Screen 1: Full-screen immersive opener -->
     <div class="intro-screen screen-1" id="screen1">
@@ -46,8 +42,7 @@
           <p class="intro-role-en">Digital Storyteller</p>
         </div>
       </div>
-      <button class="enter-btn enter-btn-early" onclick="document.querySelector('[data-target=hall]').click()">进入展览</button>
-      <div class="scroll-hint" style="margin-top:20px;">
+      <div class="scroll-hint">
         <span class="scroll-hint-line"></span>
       </div>
     </div>
@@ -297,19 +292,7 @@
 
   <!-- ABOUT: integrated into the landing intro (screens 1-5) -->
 
-  <script src="data.js?v=99"></script>
-  <script src="script.js?v=99"></script>
-  <!-- 紧急兜底：3秒后强制显示着陆页 -->
-  <script>
-  setTimeout(function() {
-    var l = document.getElementById('landing');
-    if (l && !l.classList.contains('active')) { l.classList.add('active'); }
-    console.log('兜底检查完成');
-  }, 3000);
-  </script>
-<script>
-document.getElementById('landing').style.opacity='1';
-document.getElementById('landing').style.pointerEvents='all';
-</script>
+  <script src="data.js?v=77"></script>
+  <script src="script.js?v=77"></script>
 </body>
 </html>
