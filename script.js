@@ -552,23 +552,15 @@ async function initDataStore() {
     if (!saved.videoProjects) console.warn('[DreamArchive] 视频作品从默认数据恢复');
   }
 
-  // Merge: always ensure data.js projects are present
-  if (fileData && fileData.imageProjects) {
-    const before = imageProjects.length;
-    const activeIds = new Set(imageProjects.map(p => p.id));
-    const missing = (fileData.imageProjects || []).filter(p => !activeIds.has(p.id));
-    if (missing.length > 0) {
-      imageProjects = [...imageProjects, ...missing];
-      console.log('[DreamArchive] 🔧 从 data.js 合并 ' + missing.length + ' 个图片作品 (总数: ' + imageProjects.length + ')');
-    }
+  // Only use data.js defaults if user has NO existing data (first-time load)
+  // Never merge — respect the user's actual project list
+  if (imageProjects.length === 0 && fileData && fileData.imageProjects) {
+    imageProjects = fileData.imageProjects;
+    console.log('[DreamArchive] 首次加载，使用 data.js 默认图片作品');
   }
-  if (fileData && fileData.videoProjects) {
-    const activeIds = new Set(videoProjects.map(p => p.id));
-    const missing = (fileData.videoProjects || []).filter(p => !activeIds.has(p.id));
-    if (missing.length > 0) {
-      videoProjects = [...videoProjects, ...missing];
-      console.log('[DreamArchive] 🔧 从 data.js 合并 ' + missing.length + ' 个视频作品 (总数: ' + videoProjects.length + ')');
-    }
+  if (videoProjects.length === 0 && fileData && fileData.videoProjects) {
+    videoProjects = fileData.videoProjects;
+    console.log('[DreamArchive] 首次加载，使用 data.js 默认视频作品');
   }
 
   // Log storage info
