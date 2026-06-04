@@ -518,22 +518,8 @@ async function initDataStore() {
     console.log('[DreamArchive] ✅ 从 data.js 加载成功 — 图片:', fileData.imageProjects?.length || 0, '视频:', fileData.videoProjects?.length || 0);
   }
 
-  // 0b: Try fetch data.json (for deployed sites, overrides data.js if newer)
-  try {
-    const resp = await fetch('data.json?v=' + Date.now());
-    if (resp.ok) {
-      const text = await resp.text();
-      const fetched = JSON.parse(text);
-      const fetchedTime = fetched._meta?.lastModified ? new Date(fetched._meta.lastModified).getTime() : 0;
-      const embeddedTime = fileData?._meta?.lastModified ? new Date(fileData._meta.lastModified).getTime() : 0;
-      if (fetchedTime >= embeddedTime) {
-        fileData = fetched;
-        console.log('[DreamArchive] ✅ 从 data.json 加载（比 data.js 更新）');
-      }
-    }
-  } catch(e) {
-    // fetch fails silently — data.js already covers this
-  }
+  // data.js is loaded via <script> tag — it's always the primary source
+  // fetch('data.json') is redundant and slow in some regions, so we skip it
 
   // Step 1: Open IndexedDB
   try {
