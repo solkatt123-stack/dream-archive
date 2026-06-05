@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <title>造梦档案馆 — Dream Archive</title>
-  <link rel="stylesheet" href="styles.css?v=79">
+  <link rel="stylesheet" href="styles.css?v=80">
   <style>
     /* 无JS后备: 着陆页始终可见。注意: opacity和pointer-events不加!important，否则JS无法切换视图 */
     html,body{width:100%;min-height:100vh;margin:0;padding:0}
@@ -295,7 +295,17 @@
 
   <!-- ABOUT: integrated into the landing intro (screens 1-5) -->
 
-  <script src="data.js?v=79"></script>
-  <script src="script.js?v=79"></script>
+  <!-- Diagnostic: visible proof JS loaded -->
+  <div id="js-diag" style="position:fixed;top:0;left:0;z-index:999999;background:red;color:white;padding:4px 10px;font:12px monospace;">JS: loading...</div>
+  <script>
+    document.getElementById('js-diag').textContent = 'JS: data.js loaded, EMBEDDED=' + (typeof EMBEDDED_DATA !== 'undefined' ? EMBEDDED_DATA.imageProjects.length + 'imgs+' + EMBEDDED_DATA.videoProjects.length + 'vids' : 'UNDEFINED');
+    document.getElementById('js-diag').style.background = 'green';
+    window.onerror = function(msg, url, line) {
+      document.getElementById('js-diag').textContent = 'JS ERROR: ' + msg + ' @' + line;
+      document.getElementById('js-diag').style.background = 'red';
+    };
+  </script>
+  <script src="data.js?v=80"></script>
+  <script src="script.js?v=80"></script>
 </body>
 </html>
