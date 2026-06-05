@@ -7,14 +7,14 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <title>造梦档案馆 — Dream Archive</title>
-  <link rel="stylesheet" href="styles.css?v=85">
+  <link rel="stylesheet" href="styles.css?v=86">
 </head>
 <body>
 
-  <!-- Version check: v85 — file-based storage with data.json + images/ + videos/ -->
+  <!-- Version check: v86 — file-based storage with data.json + images/ + videos/ -->
   <!-- ==================== GRAIN OVERLAY ==================== -->
   <div class="grain-overlay"></div>
-  <div id="version-checker" style="position:fixed;bottom:5px;right:10px;z-index:99999;font-size:10px;color:#999;font-family:monospace;pointer-events:none;">v85</div>
+  <div id="version-checker" style="position:fixed;bottom:5px;right:10px;z-index:99999;font-size:10px;color:#999;font-family:monospace;pointer-events:none;">v86</div>
   <svg style="display:none">
     <filter id="film-grain">
       <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
@@ -289,17 +289,7 @@
 
   <!-- ABOUT: integrated into the landing intro (screens 1-5) -->
 
-  <!-- Diagnostic: visible proof JS loaded -->
-  <div id="js-diag" style="position:fixed;top:0;left:0;z-index:999999;background:red;color:white;padding:4px 10px;font:12px monospace;">JS: loading...</div>
-  <script>
-    document.getElementById('js-diag').textContent = 'JS: data.js loaded, EMBEDDED=' + (typeof EMBEDDED_DATA !== 'undefined' ? EMBEDDED_DATA.imageProjects.length + 'imgs+' + EMBEDDED_DATA.videoProjects.length + 'vids' : 'UNDEFINED');
-    document.getElementById('js-diag').style.background = 'green';
-    window.onerror = function(msg, url, line) {
-      document.getElementById('js-diag').textContent = 'JS ERROR: ' + msg + ' @' + line;
-      document.getElementById('js-diag').style.background = 'red';
-    };
-  </script>
-  <script src="data.js?v=85"></script>
-  <script src="script.js?v=85"></script>
+  <script src="data.js?v=86"></script>
+  <script src="script.js?v=86"></script>
 </body>
 </html>
