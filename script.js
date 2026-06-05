@@ -2118,7 +2118,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     LandingPage.init();
     Parallax.init();
     initNavigation();
-    Editor.init();
+    // Editor.init(); // 只读模式 — 编辑功能已禁用
     document.getElementById('landing').classList.add('active');
     console.log('造梦档案馆 v99 loaded — images:', imageProjects.length, 'videos:', videoProjects.length);
   } catch(e) {
