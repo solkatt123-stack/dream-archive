@@ -1006,20 +1006,7 @@ const VideoGallery = {
       archive.appendChild(strip);
     });
 
-    // Add "capture all covers" button if not already there
-    let captureBtn = document.getElementById('captureAllCoversBtn');
-    if (!captureBtn) {
-      captureBtn = document.createElement('button');
-      captureBtn.id = 'captureAllCoversBtn';
-      captureBtn.textContent = '📸 截取全部封面';
-      captureBtn.style.cssText = 'display:inline-block;margin:10px;padding:8px 16px;background:#4a4238;color:#d4cfc7;border:1px solid #6b635b;border-radius:6px;cursor:pointer;font-size:0.85rem;';
-      captureBtn.addEventListener('click', () => {
-        Editor.showToast('正在截取视频封面...查看控制台进度');
-        captureAllMissingThumbnails();
-      });
-      const header = document.querySelector('#video-gallery .gallery-header');
-      if (header) header.appendChild(captureBtn);
-    }
+    // 截取全部封面按钮已移除 — 只读模式
 
     const instruction = document.querySelector('#video-gallery .gallery-instruction');
     if (instruction) instruction.style.opacity = '0.5';
@@ -1121,7 +1108,7 @@ const VideoProjectDetail = {
     const fileInput = document.getElementById('vpFileInput');
     const setBtn = document.getElementById('vpSetBtn');
     const hintEl = placeholder.querySelector('.vp-hint');
-    const showUpload = !proj.videoUrl;
+    const showUpload = false; // 只读模式 — 隐藏视频上传表单
 
     if (urlInput) urlInput.style.display = showUpload ? 'block' : 'none';
     if (fileInput) fileInput.style.display = showUpload ? 'block' : 'none';
@@ -1266,8 +1253,7 @@ const Editor = {
   panel: null,
 
   init() {
-    this.createPanel();
-    this.createEditButton();
+    // 编辑面板和切换按钮已移除 — 只读模式
 
     // Wire up video URL set button (on detail page)
     const vpSetBtn = document.getElementById('vpSetBtn');
@@ -1328,13 +1314,7 @@ const Editor = {
       });
     }
 
-    document.addEventListener('keydown', (e) => {
-      // Toggle if E pressed, unless typing in an input/textarea
-      const tag = e.target.tagName;
-      if (e.key === 'e' && tag !== 'INPUT' && tag !== 'TEXTAREA' && !e.target.isContentEditable) {
-        this.toggle();
-      }
-    });
+    // E 键切换编辑模式已禁用 — 只读模式
 
     // Project delete & add — always active (no edit mode required)
     document.addEventListener('click', (e) => {
@@ -1361,64 +1341,7 @@ const Editor = {
       }
     });
 
-    // Edit-mode click delegation
-    document.addEventListener('click', (e) => {
-      if (!this.active) return;
-
-      // Storyboard delete
-      const delBtn = e.target.closest('[data-action="delete-storyboard"]');
-      if (delBtn) {
-        e.preventDefault();
-        e.stopPropagation();
-        this.deleteStoryboard(delBtn);
-        return;
-      }
-
-      // Storyboard add
-      const addBtn = e.target.closest('[data-action="add-storyboard"]');
-      if (addBtn) {
-        e.preventDefault();
-        e.stopPropagation();
-        this.addStoryboard(addBtn);
-        return;
-      }
-
-      // Don't intercept clicks on any action buttons (delete-project, etc.)
-      if (e.target.closest('[data-action]')) return;
-
-      // Image edit
-      const imgEl = e.target.closest('[data-editable="image"]');
-      if (imgEl) {
-        e.preventDefault();
-        e.stopPropagation();
-        this.onImageClick(imgEl);
-        return;
-      }
-      // Video URL edit — click video player area to set URL
-      const vidEl = e.target.closest('[data-editable="videoUrl"]');
-      if (vidEl) {
-        e.preventDefault();
-        e.stopPropagation();
-        vidEl.style.outline = '2px solid #d4b87a';
-        setTimeout(() => { vidEl.style.outline = ''; }, 200);
-        this.showVideoUrlModal(vidEl);
-        return;
-      }
-      // Text edit
-      const textEl = e.target.closest('[data-editable="text"]');
-      if (textEl && !e.target.closest('.inline-edit-input') && textEl.tagName !== 'TEXTAREA') {
-        e.preventDefault();
-        e.stopPropagation();
-        this.startTextEdit(textEl);
-      }
-      // For textarea: save on blur
-      if (textEl && textEl.tagName === 'TEXTAREA' && !textEl._blurWired) {
-        textEl._blurWired = true;
-        textEl.addEventListener('blur', () => {
-          if (textEl.value.trim()) this.onTextEdited(textEl);
-        });
-      }
-    });
+    // 编辑模式点击委托已移除 — 只读模式
   },
 
   toggle() {

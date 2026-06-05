@@ -1625,6 +1625,37 @@ body {
 .edit-mode .add-project-btn {
   display: inline-block;
 }
+
+/* 隐藏所有编辑相关UI — 只读模式 */
+.vp-url-input,
+.vp-file-input,
+.vp-upload-btn,
+.vp-hint,
+.card-del-btn,
+.storyboard-del-btn,
+.storyboard-add-frame,
+[data-action="delete-project"],
+[data-action="add-image"],
+[data-action="add-video"] {
+  display: none !important;
+}
+.edit-mode .vp-url-input,
+.edit-mode .vp-file-input,
+.edit-mode .vp-upload-btn,
+.edit-mode .vp-hint,
+.edit-mode .card-del-btn,
+.edit-mode .storyboard-del-btn,
+.edit-mode .storyboard-add-frame,
+.edit-mode [data-action="delete-project"],
+.edit-mode [data-action="add-image"],
+.edit-mode [data-action="add-video"] {
+  display: block !important;
+}
+.edit-mode .vp-file-input { display: block !important; }
+.edit-mode .vp-url-input { display: block !important; }
+.edit-mode .vp-upload-btn { display: inline-block !important; }
+.edit-mode .vp-hint { display: block !important; }
+.edit-mode .card-del-btn { display: flex !important; }
 .add-project-btn:hover {
   background: var(--gold-aged);
   color: white;
@@ -2101,6 +2132,7 @@ body {
 
 /* Edit toggle button — subtle, bottom-right */
 .edit-toggle-btn {
+  display: none !important; /* 只读模式 — 永久隐藏 */
   position: fixed;
   bottom: 24px;
   right: 24px;
@@ -2133,6 +2165,8 @@ body:hover .edit-toggle-btn {
 
 /* Edit Panel */
 .edit-panel {
+  display: none !important; /* 只读模式 — 永久隐藏 */
+  position: fixed;
   position: fixed;
   bottom: 24px;
   left: 50%;
@@ -2142,6 +2176,7 @@ body:hover .edit-toggle-btn {
 }
 
 .edit-panel.visible {
+  display: none !important; /* 只读模式 */
   transform: translateX(-50%) translateY(0);
 }
 
