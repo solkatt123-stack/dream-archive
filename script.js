@@ -660,28 +660,19 @@ const ViewManager = {
       current.classList.remove('fresh');
     }
 
-    // Override landing's inline !important styles that block JS navigation
+    // Override any !important styles that block JS navigation (e.g. landing inline CSS)
     if (current && current.id === 'landing') {
-      current.style.opacity = '0';
-      current.style.pointerEvents = 'none';
+      current.style.setProperty('opacity', '0', 'important');
+      current.style.setProperty('pointer-events', 'none', 'important');
     }
 
     const delay = opts.instant ? 0 : 400;
 
     setTimeout(() => {
-      // Remove landing inline override when navigating away from it
-      if (this.currentView === 'landing') {
-        const landing = this.views['landing'];
-        if (landing) {
-          landing.style.opacity = '0';
-          landing.style.pointerEvents = 'none';
-        }
-      }
-
-      // Restore landing inline style when navigating to it
+      // Restore landing when navigating to it
       if (targetId === 'landing') {
-        target.style.opacity = '';
-        target.style.pointerEvents = '';
+        target.style.setProperty('opacity', '1', 'important');
+        target.style.setProperty('pointer-events', 'all', 'important');
       }
 
       target.scrollTop = 0;
