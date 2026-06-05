@@ -1609,7 +1609,7 @@ body {
 
 /* Gallery "Add project" button */
 .add-project-btn {
-  display: inline-block;
+  display: none; /* 默认隐藏,仅编辑模式显示 */
   margin-top: 8px;
   padding: 6px 16px;
   background: transparent;
@@ -1621,6 +1621,9 @@ body {
   cursor: pointer;
   border-radius: 4px;
   transition: background 0.2s, color 0.2s;
+}
+.edit-mode .add-project-btn {
+  display: inline-block;
 }
 .add-project-btn:hover {
   background: var(--gold-aged);
